@@ -6,7 +6,7 @@ export default function Hero() {
       className="relative w-full overflow-hidden bg-black"
       style={{
         minHeight: "100dvh",
-        paddingTop: "calc(24px + 5rem)",
+        paddingTop: "5rem",
       }}
     >
       {/* Full-bleed background image */}
@@ -20,7 +20,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/20" />
 
       {/* Tagline + CTAs */}
-      <div className="relative flex items-center justify-center min-h-[calc(100dvh-24px-5rem)] px-6">
+      <div className="relative flex items-center justify-center min-h-[calc(100dvh-5rem)] px-6">
         <div className="text-center">
           <h1
             className="text-[56px] md:text-[72px] lg:text-[96px] leading-[1.05] tracking-[0.02em] text-white"

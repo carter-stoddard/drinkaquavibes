@@ -2,7 +2,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
-import AnnouncementBar from "./components/AnnouncementBar";
 import SiteNav from "./components/SiteNav";
 import Hero from "./components/Hero";
 import USPSection from "./components/USPSection";
@@ -20,7 +19,6 @@ export default function App() {
 
   return (
     <>
-      <AnnouncementBar />
       <SiteNav />
       <Hero />
       <USPSection />

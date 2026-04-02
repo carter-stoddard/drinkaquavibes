@@ -60,28 +60,6 @@ html.lenis, html.lenis body {
   overflow: hidden;
 }
 
-/* ── Announcement Bar Marquee ── */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-
-/* ── Announcement Waveform ── */
-@keyframes waveform-pulse {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1); }
-}
-
-/* ── Menu open — hide announcement bar ── */
-html.menu-open .announcement-bar {
-  opacity: 0 !important;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
 
 /* ── GSAP pin-spacer background fix ── */
 .pin-spacer {
