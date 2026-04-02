@@ -30,7 +30,7 @@ const IMAGES = [
 
 export default function ImageGrid() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.15 });
+  const isInView = useInView(ref, { once: true, amount: 0.05 });
 
   return (
     <section ref={ref} className="bg-white py-20 md:py-28 lg:py-36 px-5 md:px-12 lg:px-20">

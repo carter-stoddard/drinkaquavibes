@@ -37,15 +37,20 @@ export default function Footer() {
 
           {/* Center — Nav links */}
           <nav className="flex flex-col items-center gap-3">
-            {["Home", "Our Water", "Sustainability", "Wholesale", "Contact"].map(
-              (link) => (
+            {[
+              { label: "Home", href: "/" },
+              { label: "Our Water", href: "/#the-water" },
+              { label: "Sustainability", href: "/#the-bottle" },
+              { label: "Wholesale", href: "/wholesale" },
+              { label: "Reviews", href: "/#social-proof" },
+            ].map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.label}
+                  href={link.href}
                   className="text-[11px] md:text-[12px] tracking-[0.2em] uppercase text-white hover:underline underline-offset-4 decoration-white/40 transition-all duration-300"
                   style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
                 >
-                  {link}
+                  {link.label}
                 </a>
               )
             )}
