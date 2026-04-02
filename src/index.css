@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ── */
+@theme {
+  --color-deep-blue: #184EA2;
+  --color-light-gray: #E8E8E8;
+
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-accent: "Cormorant SC", serif;
+}
+
+/* ── Headings ── */
+h1, h2, h3 {
+  font-weight: 600 !important;
+}
+
+/* ── Base ── */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  color: #000;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-deep-blue);
+  color: #fff;
+}
+
+/* ── Lenis ── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ── Announcement Bar Marquee ── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* ── Announcement Waveform ── */
+@keyframes waveform-pulse {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+/* ── Menu open — hide announcement bar ── */
+html.menu-open .announcement-bar {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* ── GSAP pin-spacer background fix ── */
+.pin-spacer {
+  background: #fff !important;
+}
+
+/* ── Frequency hamburger ── */
+@keyframes freq-pulse-1 {
+  0%, 100% { height: 8px; }
+  50% { height: 16px; }
+}
+@keyframes freq-pulse-2 {
+  0%, 100% { height: 14px; }
+  50% { height: 6px; }
+}
+@keyframes freq-pulse-3 {
+  0%, 100% { height: 10px; }
+  50% { height: 18px; }
+}
+
+.freq-bar {
+  width: 2px;
+  border-radius: 2px;
+  background: white;
+  opacity: 0.8;
+  transition: all 300ms ease-in-out;
+}
+
+.freq-bar--1 { animation: freq-pulse-1 2.4s ease-in-out infinite; }
+.freq-bar--2 { animation: freq-pulse-2 2.8s ease-in-out infinite 0.3s; }
+.freq-bar--3 { animation: freq-pulse-3 2.2s ease-in-out infinite 0.7s; }
+
+.freq-icon:hover .freq-bar {
+  opacity: 1;
+  animation-duration: 0.8s;
+}
+
+/* Dark variant — over light backgrounds */
+.freq-icon--dark .freq-bar {
+  background: #184EA2;
+}
+
+/* Open state — bars become X */
+.freq-icon--open .freq-bar {
+  animation: none;
+  height: 20px;
+  opacity: 1;
+}
+.freq-icon--open .freq-bar--1 {
+  transform: rotate(45deg) translate(3px, 3px);
+}
+.freq-icon--open .freq-bar--2 {
+  opacity: 0;
+  transform: scaleY(0);
+}
+.freq-icon--open .freq-bar--3 {
+  transform: rotate(-45deg) translate(3px, -3px);
+}
+
+/* ── Hide scrollbar on carousels ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
