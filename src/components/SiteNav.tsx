@@ -37,7 +37,7 @@ export default function SiteNav() {
                 style={{
                   filter: menuOpen
                     ? "none"
-                    : "brightness(0) saturate(100%) invert(22%) sepia(85%) saturate(1500%) hue-rotate(205deg) brightness(90%)",
+                    : "brightness(0) saturate(100%) invert(24%) sepia(69%) saturate(1870%) hue-rotate(199deg) brightness(97%) contrast(87%)",
                 }}
               />
             </a>
