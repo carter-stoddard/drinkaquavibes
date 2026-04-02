@@ -53,16 +53,22 @@ function USPPanel({ usp, i, total }: { usp: USP; i: number; total: number }) {
         />
       )}
 
-      {/* Bottom gradient */}
+      {/* Gradient — top on mobile, bottom on desktop */}
       <div
-        className="absolute inset-0 z-[1]"
+        className="absolute inset-0 z-[1] hidden md:block"
         style={{
           background: "linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.6) 100%)",
         }}
       />
+      <div
+        className="absolute inset-0 z-[1] md:hidden"
+        style={{
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 60%)",
+        }}
+      />
 
-      {/* Text */}
-      <div className="absolute bottom-12 md:bottom-12 left-0 right-0 md:left-12 md:right-auto z-10 px-6 md:px-0 text-center md:text-left">
+      {/* Text — top on mobile, bottom-left on desktop */}
+      <div className="absolute top-16 md:top-auto md:bottom-12 left-0 right-0 md:left-12 md:right-auto z-10 px-6 md:px-0 text-center md:text-left">
         <h2
           className="text-[44px] md:text-[72px] lg:text-[80px] text-white leading-[1.05] tracking-[0.01em]"
           style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
@@ -95,9 +101,9 @@ function USPPanel({ usp, i, total }: { usp: USP; i: number; total: number }) {
 /* ── Mobile: vertical stack ── */
 function MobileUSP() {
   return (
-    <div id="usp" className="flex flex-col">
+    <div id="usp" className="flex flex-col gap-3 px-3 py-3 bg-white">
       {USPS.map((usp, i) => (
-        <div key={usp.id} className="w-full h-screen">
+        <div key={usp.id} className="w-full h-screen rounded-2xl overflow-hidden">
           <USPPanel usp={usp} i={i} total={USPS.length} />
         </div>
       ))}
