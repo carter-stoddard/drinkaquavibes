@@ -136,11 +136,11 @@ export default function USPSection() {
   }, []);
 
   return (
-    <div className="bg-white px-3 md:px-5 py-3 md:py-5">
+    <div className="bg-white px-0 md:px-5 py-0 md:py-5">
     <section
       ref={sectionRef}
       id="usp"
-      className="relative rounded-2xl md:rounded-3xl"
+      className="relative md:rounded-3xl"
       style={{ overflow: "hidden", touchAction: "pan-y", background: "#0a0a0a" }}
     >
       {/* Pill navigation tabs */}

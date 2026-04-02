@@ -85,7 +85,12 @@ html.menu-open .announcement-bar {
 
 /* ── GSAP pin-spacer background fix ── */
 .pin-spacer {
-  background: #fff !important;
+  background: #0a0a0a !important;
+}
+@media (min-width: 768px) {
+  .pin-spacer {
+    background: #fff !important;
+  }
 }
 
 /* ── Frequency hamburger ── */
