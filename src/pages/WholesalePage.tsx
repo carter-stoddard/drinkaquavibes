@@ -1,6 +1,5 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { getSupabase } from "../lib/supabase";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import SiteNav from "../components/SiteNav";
