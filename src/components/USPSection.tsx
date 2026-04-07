@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -132,7 +133,13 @@ export default function USPSection() {
   return (
     <div className="bg-white px-4 md:px-8 lg:px-10 pt-4 md:pt-8 lg:pt-10 pb-0">
       {/* Section header */}
-      <div className="text-center mb-6 md:mb-10">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="text-center mb-6 md:mb-10"
+      >
         <span
           className="block text-[11px] md:text-[12px] tracking-[0.3em] uppercase text-black/35 mb-3"
           style={{ fontFamily: "var(--font-accent)", fontWeight: 300 }}
@@ -145,7 +152,7 @@ export default function USPSection() {
         >
           The Science Behind the Sip
         </h2>
-      </div>
+      </motion.div>
       <section
         ref={sectionRef}
         id="usp"

@@ -1,3 +1,12 @@
+import { motion } from "framer-motion";
+
+const fade = (delay: number) => ({
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-10%" },
+  transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
+});
+
 export default function Footer() {
   return (
     <footer className="bg-[#184EA2] text-white px-6 md:px-12 lg:px-20 pt-20 md:pt-28 lg:pt-32 pb-8 md:pb-10">
@@ -5,7 +14,7 @@ export default function Footer() {
         {/* Three columns */}
         <div className="flex flex-col items-center text-center md:items-stretch md:text-left md:flex-row md:justify-between gap-14 md:gap-8 pb-16 md:pb-20">
           {/* Left — Logo, tagline, socials */}
-          <div className="flex flex-col items-center md:items-start gap-4">
+          <motion.div {...fade(0)} className="flex flex-col items-center md:items-start gap-4">
             <img
               src="/Aqua-Vibes-Logo-Web.png"
               alt="Aqua Vibes"
@@ -33,10 +42,10 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Center — Nav links */}
-          <nav className="flex flex-col items-center gap-3">
+          <motion.nav {...fade(0.1)} className="flex flex-col items-center gap-3">
             {[
               { label: "Home", href: "/" },
               { label: "Our Water", href: "/#the-water" },
@@ -54,10 +63,10 @@ export default function Footer() {
                 </a>
               )
             )}
-          </nav>
+          </motion.nav>
 
           {/* Right — Email capture */}
-          <div className="flex flex-col items-center md:items-end gap-4 w-full max-w-[260px]">
+          <motion.div {...fade(0.2)} className="flex flex-col items-center md:items-end gap-4 w-full max-w-[260px]">
             <span
               className="text-[11px] tracking-[0.2em] uppercase text-white/60"
               style={{ fontFamily: "var(--font-accent)", fontWeight: 300 }}
@@ -78,14 +87,14 @@ export default function Footer() {
             >
               Join
             </button>
-          </div>
+          </motion.div>
         </div>
 
         {/* Divider */}
-        <div className="w-full h-px bg-white/20" />
+        <motion.div {...fade(0.3)} className="w-full h-px bg-white/20" />
 
         {/* Bottom legal */}
-        <div className="flex flex-col md:flex-row items-center md:justify-between gap-3 pt-6">
+        <motion.div {...fade(0.35)} className="flex flex-col md:flex-row items-center md:justify-between gap-3 pt-6">
           <p
             className="text-[10px] md:text-[11px] text-white/50 tracking-wide"
             style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
@@ -108,7 +117,7 @@ export default function Footer() {
               Terms
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

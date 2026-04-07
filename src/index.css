@@ -68,7 +68,7 @@ html.lenis, html.lenis body {
 }
 
 .animate-marquee-reviews {
-  animation: marquee-reviews 40s linear infinite;
+  animation: marquee-reviews 20s linear infinite;
 }
 
 /* ── GSAP pin-spacer background fix ── */

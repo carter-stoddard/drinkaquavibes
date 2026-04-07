@@ -78,9 +78,37 @@ export default function SiteNav() {
         className="fixed left-0 right-0 z-40"
         style={{ top: "0" }}
       >
-        <div className="px-4 md:px-8 lg:px-12 pt-3 md:pt-4">
+        {/* ── Mobile Nav ── */}
+        <div className="md:hidden flex items-center justify-between px-4 pt-3 h-14">
+          {/* Left — Logo */}
+          <a href="/" className="select-none">
+            <img
+              src="/Aqua-Vibes-Logo-Web.png"
+              alt="Aqua Vibes"
+              className="h-8 w-auto object-contain transition-all duration-500"
+              style={{ filter: logoFilter }}
+            />
+          </a>
+
+          {/* Right — Menu Toggle with square border */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className={`freq-icon flex items-end justify-center gap-[2px] w-[40px] h-[40px] rounded-md border-2 cursor-pointer pb-[9px] transition-colors duration-500${menuOpen ? " freq-icon--open" : freqClass}`}
+            style={{ borderColor }}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+          >
+            <span className="freq-bar freq-bar--1" />
+            <span className="freq-bar freq-bar--2" />
+            <span className="freq-bar freq-bar--3" />
+            <span className="freq-bar freq-bar--4" />
+            <span className="freq-bar freq-bar--5" />
+          </button>
+        </div>
+
+        {/* ── Desktop Nav — pill bar ── */}
+        <div className="hidden md:block px-8 lg:px-12 pt-4">
           <div
-            className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16 rounded-full transition-all duration-500"
+            className="flex items-center justify-between px-6 h-16 rounded-full transition-all duration-500"
             style={{
               border: `2px solid ${borderColor}`,
               backgroundColor: "transparent",
@@ -104,7 +132,7 @@ export default function SiteNav() {
               <img
                 src="/Aqua-Vibes-Logo-Web.png"
                 alt="Aqua Vibes"
-                className="h-8 md:h-10 w-auto object-contain transition-all duration-500"
+                className="h-10 w-auto object-contain transition-all duration-500"
                 style={{ filter: logoFilter }}
               />
             </a>
@@ -112,7 +140,7 @@ export default function SiteNav() {
             {/* Right — Buy Wholesale CTA */}
             <a
               href="/wholesale"
-              className="hidden sm:inline-flex items-center justify-center px-6 py-2 rounded-full text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-all duration-500 hover:scale-[1.03] active:scale-[0.98]"
+              className="inline-flex items-center justify-center px-6 py-2 rounded-full text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-all duration-500 hover:scale-[1.03] active:scale-[0.98]"
               style={{
                 fontFamily: "var(--font-body)",
                 fontWeight: 400,
@@ -122,8 +150,6 @@ export default function SiteNav() {
             >
               Buy Wholesale
             </a>
-            {/* Mobile — placeholder to balance flex */}
-            <div className="w-[36px] sm:hidden" />
           </div>
         </div>
       </nav>
