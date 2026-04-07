@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback, useState } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
 interface Testimonial {
@@ -91,167 +91,121 @@ function Stars() {
   );
 }
 
+function FreqWave() {
+  return (
+    <svg width="100%" height="24" viewBox="0 0 200 24" preserveAspectRatio="none" className="opacity-15">
+      <path
+        d="M0,12 Q10,4 20,12 T40,12 T60,12 T80,12 T100,12 T120,12 T140,12 T160,12 T180,12 T200,12"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="1"
+      />
+      <path
+        d="M0,12 Q10,20 20,12 T40,12 T60,12 T80,12 T100,12 T120,12 T140,12 T160,12 T180,12 T200,12"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="0.5"
+      />
+    </svg>
+  );
+}
+
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <div className="flex flex-col h-full">
-      <Stars />
-      <p
-        className="text-lg md:text-xl leading-[1.6] mb-6 flex-1 text-white"
-        style={{
-          fontFamily: "var(--font-display)",
-          fontWeight: 300,
-          fontStyle: "italic",
-        }}
-      >
-        &ldquo;{t.quote}&rdquo;
-      </p>
-      <div>
-        <div className="w-full h-[1px] bg-white/15 mb-4" />
-        <span
-          className="text-[11px] tracking-[0.18em] uppercase text-white/50"
-          style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
+    <div className="flex flex-col h-full relative overflow-hidden">
+      {/* Subtle frequency wave background */}
+      <div className="absolute bottom-4 left-0 right-0 z-0">
+        <FreqWave />
+      </div>
+
+      <div className="relative z-10 flex flex-col h-full">
+        <Stars />
+        <p
+          className="text-lg md:text-xl leading-[1.6] mb-6 flex-1 text-black"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontWeight: 300,
+            fontStyle: "italic",
+          }}
         >
-          {t.name} — {t.title}
-        </span>
+          &ldquo;{t.quote}&rdquo;
+        </p>
+        <div>
+          <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-black/10 to-transparent mb-4" />
+          <div className="flex items-center justify-between">
+            <span
+              className="text-[11px] tracking-[0.18em] uppercase text-black/40"
+              style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
+            >
+              {t.name} — {t.title}
+            </span>
+            <span className="text-[9px] tracking-[0.2em] uppercase text-[#184EA2]/20" style={{ fontFamily: "var(--font-accent)" }}>
+              888 Hz
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
+const CARD_STYLE = {
+  background: "#fff",
+  border: "1px solid rgba(0,0,0,0.08)",
+  boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+};
+
 export default function SocialProof() {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: "-10%" });
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
-  const [activeIndex, setActiveIndex] = useState(0);
 
-  const getCardStep = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return 0;
-    const card = el.firstElementChild as HTMLElement | null;
-    if (!card) return 0;
-    return card.offsetWidth + 20; // card width + gap
-  }, []);
-
-  const getVisibleCount = useCallback(() => {
-    return window.innerWidth >= 1024 ? 3 : 1;
-  }, []);
-
-  const scrollToIndex = useCallback((i: number) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const step = getCardStep();
-    el.scrollTo({ left: step * i, behavior: "smooth" });
-  }, [getCardStep]);
-
-  const scrollToNext = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el || pausedRef.current) return;
-    const step = getCardStep();
-    const count = getVisibleCount();
-    const maxIndex = TESTIMONIALS.length - count;
-    const currentIdx = Math.round(el.scrollLeft / step);
-    const nextIdx = currentIdx >= maxIndex ? 0 : currentIdx + 1;
-    el.scrollTo({ left: step * nextIdx, behavior: "smooth" });
-  }, [getCardStep, getVisibleCount]);
-
-  // Track active index on scroll
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const step = getCardStep();
-      if (step > 0) {
-        setActiveIndex(Math.round(el.scrollLeft / step));
-      }
-    };
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [getCardStep]);
-
-  useEffect(() => {
-    const interval = setInterval(scrollToNext, 3000);
-    return () => clearInterval(interval);
-  }, [scrollToNext]);
-
-  const pause = () => { pausedRef.current = true; };
-  const resume = () => { setTimeout(() => { pausedRef.current = false; }, 3000); };
+  const cards = [...TESTIMONIALS, ...TESTIMONIALS];
 
   return (
-    <div className="bg-white px-3 md:px-5 py-3 md:py-5">
     <section
       ref={sectionRef}
       id="social-proof"
-      className="relative bg-[#184EA2] py-28 md:py-40 lg:py-48 rounded-2xl md:rounded-3xl"
+      className="relative bg-white py-16 md:py-24 lg:py-28 overflow-hidden"
     >
       {/* Section header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="text-center mb-16 md:mb-20 px-6"
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] as const }}
+        className="text-center mb-10 md:mb-14 px-6"
       >
         <span
-          className="block text-[11px] md:text-[12px] tracking-[0.3em] uppercase text-white/50 mb-4"
+          className="block text-[11px] md:text-[12px] tracking-[0.3em] uppercase text-black/35 mb-4"
           style={{ fontFamily: "var(--font-accent)", fontWeight: 300 }}
         >
           What People Are Saying
         </span>
         <h2
-          className="text-3xl md:text-4xl lg:text-[44px] leading-[1.1] tracking-[0.01em] text-white"
+          className="text-4xl md:text-5xl lg:text-[64px] leading-[1.1] tracking-[0.01em] text-[#184EA2]"
           style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
         >
-          Hydration, elevated.
+          Hydration, Elevated
         </h2>
       </motion.div>
 
-      {/* Scrolling carousel — all breakpoints */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="overflow-hidden px-6 md:px-10 lg:px-16"
-      >
-        <div
-          ref={scrollRef}
-          onTouchStart={pause}
-          onTouchEnd={resume}
-          onMouseEnter={pause}
-          onMouseLeave={resume}
-          className="flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-          style={{
-            scrollBehavior: "smooth",
-            WebkitOverflowScrolling: "touch",
-            touchAction: "pan-x",
-          }}
-        >
-          {TESTIMONIALS.map((t) => (
+      {/* Continuous marquee */}
+      <div className="relative">
+        {/* Fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 z-10" style={{ background: "linear-gradient(to right, #fff, transparent)" }} />
+        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 z-10" style={{ background: "linear-gradient(to left, #fff, transparent)" }} />
+
+        <div className="flex gap-5 animate-marquee-reviews hover:[animation-play-state:paused]">
+          {cards.map((t, i) => (
             <div
-              key={t.name}
-              className="w-full lg:w-[calc((100%-2.5rem)/3)] flex-shrink-0 snap-start bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8"
+              key={`${t.name}-${i}`}
+              className="w-[85vw] sm:w-[60vw] md:w-[40vw] lg:w-[340px] flex-shrink-0 rounded-2xl p-6 md:p-8"
+              style={CARD_STYLE}
             >
               <TestimonialCard t={t} />
             </div>
           ))}
         </div>
-      </motion.div>
-
-      {/* Dot indicators */}
-      <div className="flex items-center justify-center gap-2 mt-8 md:mt-12">
-        {TESTIMONIALS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => scrollToIndex(i)}
-            className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-300 ${
-              activeIndex === i
-                ? "bg-white scale-125"
-                : "bg-white/30 hover:bg-white/50"
-            }`}
-            aria-label={`Go to review ${i + 1}`}
-          />
-        ))}
       </div>
     </section>
-    </div>
   );
 }

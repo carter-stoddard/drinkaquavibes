@@ -61,6 +61,16 @@ html.lenis, html.lenis body {
 }
 
 
+/* ── Continuous review marquee ── */
+@keyframes marquee-reviews {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-reviews {
+  animation: marquee-reviews 40s linear infinite;
+}
+
 /* ── GSAP pin-spacer background fix ── */
 .pin-spacer {
   background: #fff !important;
@@ -68,16 +78,24 @@ html.lenis, html.lenis body {
 
 /* ── Frequency hamburger ── */
 @keyframes freq-pulse-1 {
-  0%, 100% { height: 8px; }
-  50% { height: 16px; }
+  0%, 100% { height: 6px; }
+  50% { height: 14px; }
 }
 @keyframes freq-pulse-2 {
-  0%, 100% { height: 14px; }
-  50% { height: 6px; }
+  0%, 100% { height: 12px; }
+  50% { height: 5px; }
 }
 @keyframes freq-pulse-3 {
-  0%, 100% { height: 10px; }
-  50% { height: 18px; }
+  0%, 100% { height: 16px; }
+  50% { height: 8px; }
+}
+@keyframes freq-pulse-4 {
+  0%, 100% { height: 9px; }
+  50% { height: 17px; }
+}
+@keyframes freq-pulse-5 {
+  0%, 100% { height: 7px; }
+  50% { height: 13px; }
 }
 
 .freq-bar {
@@ -89,8 +107,10 @@ html.lenis, html.lenis body {
 }
 
 .freq-bar--1 { animation: freq-pulse-1 2.4s ease-in-out infinite; }
-.freq-bar--2 { animation: freq-pulse-2 2.8s ease-in-out infinite 0.3s; }
-.freq-bar--3 { animation: freq-pulse-3 2.2s ease-in-out infinite 0.7s; }
+.freq-bar--2 { animation: freq-pulse-2 2.0s ease-in-out infinite 0.2s; }
+.freq-bar--3 { animation: freq-pulse-3 2.8s ease-in-out infinite 0.5s; }
+.freq-bar--4 { animation: freq-pulse-4 2.1s ease-in-out infinite 0.8s; }
+.freq-bar--5 { animation: freq-pulse-5 2.6s ease-in-out infinite 0.4s; }
 
 .freq-icon:hover .freq-bar {
   opacity: 1;
@@ -105,18 +125,26 @@ html.lenis, html.lenis body {
 /* Open state — bars become X */
 .freq-icon--open .freq-bar {
   animation: none;
-  height: 20px;
+  height: 18px;
   opacity: 1;
 }
 .freq-icon--open .freq-bar--1 {
-  transform: rotate(45deg) translate(3px, 3px);
+  transform: rotate(45deg) translate(4px, 4px);
 }
 .freq-icon--open .freq-bar--2 {
   opacity: 0;
   transform: scaleY(0);
 }
 .freq-icon--open .freq-bar--3 {
-  transform: rotate(-45deg) translate(3px, -3px);
+  opacity: 0;
+  transform: scaleY(0);
+}
+.freq-icon--open .freq-bar--4 {
+  opacity: 0;
+  transform: scaleY(0);
+}
+.freq-icon--open .freq-bar--5 {
+  transform: rotate(-45deg) translate(4px, -4px);
 }
 
 /* ── Hide scrollbar on carousels ── */

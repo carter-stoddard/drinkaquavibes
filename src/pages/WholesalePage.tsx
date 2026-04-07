@@ -48,8 +48,6 @@ const INITIAL: FormData = {
   message: "",
 };
 
-const NAV_HEIGHT = "100px";
-
 const fieldLabel =
   "block text-[10px] tracking-[0.18em] uppercase mb-1 text-[#184EA2]";
 const fieldInput =
@@ -81,291 +79,190 @@ export default function WholesalePage() {
     }
   };
 
-  const fields: { key: keyof FormData; label: string; type?: string; options?: string[]; textarea?: boolean; required?: boolean }[] = [
-    { key: "first_name", label: "First Name", required: true },
-    { key: "last_name", label: "Last Name", required: true },
-    { key: "company", label: "Company / Business Name", required: true },
-    { key: "email", label: "Email", type: "email", required: true },
-    { key: "phone", label: "Phone Number", type: "tel", required: true },
-    { key: "store_type", label: "Store Type", options: STORE_TYPES, required: true },
-    { key: "locations", label: "Number of Locations", options: LOCATION_COUNTS, required: true },
-    { key: "monthly_units", label: "Estimated Monthly Units", options: MONTHLY_UNITS, required: true },
-    { key: "state", label: "State / Region", required: true },
-    { key: "message", label: "Message / Notes", textarea: true, required: false },
-  ];
-
   return (
     <>
       <SiteNav />
-      <div
-        className="flex flex-col lg:flex-row lg:overflow-hidden"
-        style={{
-          paddingTop: NAV_HEIGHT,
-          minHeight: "100vh",
-          height: undefined,
-        }}
+
+      {/* ── Hero Section ── */}
+      <section
+        className="relative w-full overflow-hidden bg-black flex items-center justify-center"
+        style={{ minHeight: "100dvh" }}
       >
-        {/* Desktop: fixed viewport height. Mobile: natural flow */}
-        <style>{`
-          @media (min-width: 1024px) {
-            .wholesale-wrapper { height: calc(100vh - ${NAV_HEIGHT}); overflow: hidden; }
-          }
-        `}</style>
+        {/* Background image — replace src when you have the image */}
+        <img
+          src="/aqua-vibes-hero.png"
+          alt="Wholesale hero"
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        />
+        <div className="absolute inset-0 bg-black/30" />
 
-        {/* Left — Brand Panel (45%) */}
-        <motion.div
-          initial={{ x: -60, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="lg:w-[45%] bg-[#184EA2] flex flex-col justify-center px-8 md:px-16 lg:px-20 py-14 lg:py-0"
-        >
-          <h1
-            className="text-[44px] md:text-[56px] lg:text-[72px] leading-[1.05] tracking-[0.01em] text-white mb-5"
-            style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
-          >
-            Partner
-            <br />
-            With Us
-          </h1>
-
-          <p
-            className="text-[14px] leading-[1.7] text-white/70 max-w-[380px]"
-            style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
-          >
-            Bring Aqua Vibes to your shelves. Fill out the form and our team
-            will be in touch within 48 hours.
-          </p>
-        </motion.div>
-
-        {/* Right — Form Panel (55%) */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="lg:w-[55%] bg-white flex items-center justify-center px-6 md:px-12 lg:px-16 py-10 lg:py-0 lg:overflow-y-auto"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
+          className="relative z-10 text-center px-6 max-w-3xl"
         >
-          <div className="w-full max-w-[560px]">
-            {status === "success" ? (
-              <div className="text-center py-16">
-                <p
-                  className="text-[26px] md:text-[32px] leading-[1.2] text-[#184EA2]"
-                  style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
-                >
-                  Thank you.
-                  <br />
-                  We'll be in touch within 48 hours.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-[20px]">
-                {/* Name row — side by side */}
-                <div className="flex flex-col sm:flex-row gap-[20px]">
-                  {fields.slice(0, 2).map((f, i) => (
-                    <motion.div
-                      key={f.key}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.2 + i * 0.08 }}
-                      className="flex-1"
-                    >
-                      <label
-                        className={fieldLabel}
-                        style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                      >
-                        {f.label}
-                      </label>
-                      <input
-                        type="text"
-                        required={f.required}
-                        value={form[f.key]}
-                        onChange={set(f.key)}
-                        className={fieldInput}
-                        style={{ fontFamily: "var(--font-body)" }}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Email + Phone — side by side */}
-                <div className="flex flex-col sm:flex-row gap-[20px]">
-                  {fields.slice(3, 5).map((f, i) => (
-                    <motion.div
-                      key={f.key}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
-                      className="flex-1"
-                    >
-                      <label
-                        className={fieldLabel}
-                        style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                      >
-                        {f.label}
-                      </label>
-                      <input
-                        type={f.type || "text"}
-                        required={f.required}
-                        value={form[f.key]}
-                        onChange={set(f.key)}
-                        className={fieldInput}
-                        style={{ fontFamily: "var(--font-body)" }}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Company */}
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.36 }}
-                >
-                  <label
-                    className={fieldLabel}
-                    style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                  >
-                    Company / Business Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={form.company}
-                    onChange={set("company")}
-                    className={fieldInput}
-                    style={{ fontFamily: "var(--font-body)" }}
-                  />
-                </motion.div>
-
-                {/* Store Type + Locations — side by side */}
-                <div className="flex flex-col sm:flex-row gap-[20px]">
-                  {fields.slice(5, 7).map((f, i) => (
-                    <motion.div
-                      key={f.key}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: 0.52 + i * 0.08 }}
-                      className="flex-1"
-                    >
-                      <label
-                        className={fieldLabel}
-                        style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                      >
-                        {f.label}
-                      </label>
-                      <select
-                        required={f.required}
-                        value={form[f.key]}
-                        onChange={set(f.key)}
-                        className={selectClass}
-                        style={{ fontFamily: "var(--font-body)" }}
-                      >
-                        <option value="" disabled>Select…</option>
-                        {f.options!.map((opt) => (
-                          <option key={opt} value={opt}>{opt}</option>
-                        ))}
-                      </select>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Monthly Units + State — side by side */}
-                <div className="flex flex-col sm:flex-row gap-[20px]">
-                  <motion.div
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.68 }}
-                    className="flex-1"
-                  >
-                    <label
-                      className={fieldLabel}
-                      style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                    >
-                      Estimated Monthly Units
-                    </label>
-                    <select
-                      required
-                      value={form.monthly_units}
-                      onChange={set("monthly_units")}
-                      className={selectClass}
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      <option value="" disabled>Select…</option>
-                      {MONTHLY_UNITS.map((opt) => (
-                        <option key={opt} value={opt}>{opt}</option>
-                      ))}
-                    </select>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.76 }}
-                    className="flex-1"
-                  >
-                    <label
-                      className={fieldLabel}
-                      style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                    >
-                      State / Region
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={form.state}
-                      onChange={set("state")}
-                      className={fieldInput}
-                      style={{ fontFamily: "var(--font-body)" }}
-                    />
-                  </motion.div>
-                </div>
-
-                {/* Message */}
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.84 }}
-                >
-                  <label
-                    className={fieldLabel}
-                    style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                  >
-                    Message / Notes
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={form.message}
-                    onChange={set("message")}
-                    className={`${fieldInput} h-auto py-2 resize-none`}
-                    style={{ fontFamily: "var(--font-body)" }}
-                  />
-                </motion.div>
-
-                {/* Error message */}
-                {status === "error" && (
-                  <p
-                    className="text-[12px] text-red-500 text-center"
-                    style={{ fontFamily: "var(--font-body)" }}
-                  >
-                    Something went wrong. Please try again.
-                  </p>
-                )}
-
-                {/* Submit */}
-                <motion.button
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.92 }}
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="w-full h-[44px] rounded-full bg-[#184EA2] text-white text-[13px] tracking-[0.15em] uppercase cursor-pointer transition-opacity duration-300 hover:opacity-85 disabled:opacity-60 disabled:cursor-not-allowed"
-                  style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                >
-                  {status === "loading" ? "Sending…" : "Submit Inquiry"}
-                </motion.button>
-              </form>
-            )}
-          </div>
+          <span
+            className="block text-[11px] md:text-[12px] tracking-[0.3em] uppercase text-white/50 mb-6"
+            style={{ fontFamily: "var(--font-accent)", fontWeight: 300 }}
+          >
+            Wholesale
+          </span>
+          <h1
+            className="text-[48px] md:text-[72px] lg:text-[96px] leading-[1.05] tracking-[0.01em] text-white mb-6"
+            style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
+          >
+            Partner With Us
+          </h1>
+          <p
+            className="text-[15px] md:text-[17px] leading-[1.7] text-white/70 max-w-[500px] mx-auto"
+            style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
+          >
+            Bring Aqua Vibes to your shelves. Fill out the form below and our
+            team will be in touch within 48 hours.
+          </p>
+          {/* Scroll arrow */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.6 }}
+            className="mt-10"
+          >
+            <a href="#wholesale-form" className="inline-block text-white/40 hover:text-white/70 transition-colors">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+              </svg>
+            </a>
+          </motion.div>
         </motion.div>
-      </div>
+      </section>
+
+      {/* ── Form Section ── */}
+      <section id="wholesale-form" className="bg-white py-20 md:py-28 lg:py-36">
+        <div className="mx-auto max-w-3xl px-6 md:px-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
+            className="text-center mb-12 md:mb-16"
+          >
+            <h2
+              className="text-3xl md:text-4xl lg:text-[48px] leading-[1.1] tracking-[0.01em] text-[#184EA2] mb-4"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
+            >
+              Get in Touch
+            </h2>
+            <p
+              className="text-[14px] md:text-[15px] text-black/50 leading-[1.7]"
+              style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
+            >
+              Tell us about your business and we'll craft the perfect wholesale plan.
+            </p>
+          </motion.div>
+
+          {status === "success" ? (
+            <div className="text-center py-16">
+              <p
+                className="text-[28px] md:text-[36px] leading-[1.2] text-[#184EA2]"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
+              >
+                Thank you.
+                <br />
+                We'll be in touch within 48 hours.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              {/* Name row */}
+              <div className="flex flex-col sm:flex-row gap-6">
+                <div className="flex-1">
+                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>First Name</label>
+                  <input type="text" required value={form.first_name} onChange={set("first_name")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
+                </div>
+                <div className="flex-1">
+                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Last Name</label>
+                  <input type="text" required value={form.last_name} onChange={set("last_name")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
+                </div>
+              </div>
+
+              {/* Company */}
+              <div>
+                <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Company / Business Name</label>
+                <input type="text" required value={form.company} onChange={set("company")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
+              </div>
+
+              {/* Email + Phone */}
+              <div className="flex flex-col sm:flex-row gap-6">
+                <div className="flex-1">
+                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Email</label>
+                  <input type="email" required value={form.email} onChange={set("email")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
+                </div>
+                <div className="flex-1">
+                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Phone Number</label>
+                  <input type="tel" required value={form.phone} onChange={set("phone")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
+                </div>
+              </div>
+
+              {/* Store Type + Locations */}
+              <div className="flex flex-col sm:flex-row gap-6">
+                <div className="flex-1">
+                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Store Type</label>
+                  <select required value={form.store_type} onChange={set("store_type")} className={selectClass} style={{ fontFamily: "var(--font-body)" }}>
+                    <option value="" disabled>Select…</option>
+                    {STORE_TYPES.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Number of Locations</label>
+                  <select required value={form.locations} onChange={set("locations")} className={selectClass} style={{ fontFamily: "var(--font-body)" }}>
+                    <option value="" disabled>Select…</option>
+                    {LOCATION_COUNTS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Monthly Units + State */}
+              <div className="flex flex-col sm:flex-row gap-6">
+                <div className="flex-1">
+                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Estimated Monthly Units</label>
+                  <select required value={form.monthly_units} onChange={set("monthly_units")} className={selectClass} style={{ fontFamily: "var(--font-body)" }}>
+                    <option value="" disabled>Select…</option>
+                    {MONTHLY_UNITS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>State / Region</label>
+                  <input type="text" required value={form.state} onChange={set("state")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
+                </div>
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Message / Notes</label>
+                <textarea rows={3} value={form.message} onChange={set("message")} className={`${fieldInput} h-auto py-2 resize-none`} style={{ fontFamily: "var(--font-body)" }} />
+              </div>
+
+              {/* Error */}
+              {status === "error" && (
+                <p className="text-[12px] text-red-500 text-center" style={{ fontFamily: "var(--font-body)" }}>
+                  Something went wrong. Please try again.
+                </p>
+              )}
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full h-[52px] rounded-full bg-[#184EA2] text-white text-[14px] tracking-[0.15em] uppercase cursor-pointer transition-opacity duration-300 hover:opacity-85 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+                style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
+              >
+                {status === "loading" ? "Sending…" : "Submit Inquiry"}
+              </button>
+            </form>
+          )}
+        </div>
+      </section>
     </>
   );
 }

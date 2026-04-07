@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const NAV_LINKS = [
@@ -9,8 +9,15 @@ const NAV_LINKS = [
   { label: "Reviews", href: "#social-proof" },
 ];
 
+const DARK_SECTIONS = ["usp", "the-frequency"];
+
+const BLUE_FILTER =
+  "brightness(0) saturate(100%) invert(24%) sepia(69%) saturate(1870%) hue-rotate(199deg) brightness(97%) contrast(87%)";
+
 export default function SiteNav() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [onDark, setOnDark] = useState(true); // start on dark (hero)
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (menuOpen) {
@@ -20,53 +27,103 @@ export default function SiteNav() {
     }
   }, [menuOpen]);
 
+  // Detect if nav is over a dark section
+  useEffect(() => {
+    const check = () => {
+      const navEl = navRef.current;
+      if (!navEl) return;
+      const navMid = navEl.getBoundingClientRect().bottom;
+
+      // Check if we're still in the hero (above first section)
+      const hero = document.querySelector("section");
+      if (hero) {
+        const heroRect = hero.getBoundingClientRect();
+        if (heroRect.top <= navMid && heroRect.bottom >= navMid) {
+          setOnDark(true);
+          return;
+        }
+      }
+
+      // Check dark sections by ID
+      let dark = false;
+      for (const id of DARK_SECTIONS) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= navMid && rect.bottom >= navMid) {
+          dark = true;
+          break;
+        }
+      }
+      setOnDark(dark);
+    };
+
+    window.addEventListener("scroll", check, { passive: true });
+    check();
+    return () => window.removeEventListener("scroll", check);
+  }, []);
+
+  // When menu is open, always white. Otherwise, based on background.
+  const isWhite = menuOpen || onDark;
+  const borderColor = isWhite ? "#fff" : "#184EA2";
+  const logoFilter = isWhite ? "none" : BLUE_FILTER;
+  const ctaBg = isWhite ? "#fff" : "#184EA2";
+  const ctaColor = isWhite ? "#184EA2" : "#fff";
+  const freqClass = isWhite ? "" : " freq-icon--dark";
+
   return (
     <>
       <nav
+        ref={navRef}
         className="fixed left-0 right-0 z-40"
         style={{ top: "0" }}
       >
-        <div className="bg-transparent">
-          <div className="flex items-center justify-between px-6 md:px-10 lg:px-16 h-16 md:h-20">
-            {/* Left — Logo */}
-            <a href="/" className="select-none">
+        <div className="px-4 md:px-8 lg:px-12 pt-3 md:pt-4">
+          <div
+            className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16 rounded-full transition-all duration-500"
+            style={{
+              border: `2px solid ${borderColor}`,
+              backgroundColor: "transparent",
+            }}
+          >
+            {/* Left — Menu Toggle */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className={`freq-icon flex items-end justify-center gap-[2px] w-[36px] h-[36px] cursor-pointer pb-[8px] transition-colors duration-500${menuOpen ? " freq-icon--open" : freqClass}`}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <span className="freq-bar freq-bar--1" />
+              <span className="freq-bar freq-bar--2" />
+              <span className="freq-bar freq-bar--3" />
+              <span className="freq-bar freq-bar--4" />
+              <span className="freq-bar freq-bar--5" />
+            </button>
+
+            {/* Center — Logo */}
+            <a href="/" className="absolute left-1/2 -translate-x-1/2 select-none">
               <img
                 src="/Aqua-Vibes-Logo-Web.png"
                 alt="Aqua Vibes"
-                className="h-10 md:h-12 w-auto object-contain"
-                style={{
-                  filter: menuOpen
-                    ? "none"
-                    : "brightness(0) saturate(100%) invert(24%) sepia(69%) saturate(1870%) hue-rotate(199deg) brightness(97%) contrast(87%)",
-                }}
+                className="h-8 md:h-10 w-auto object-contain transition-all duration-500"
+                style={{ filter: logoFilter }}
               />
             </a>
 
-            {/* Right — Buy Wholesale CTA + Hamburger */}
-            <div className="flex items-center gap-4">
-              <a
-                href="/wholesale"
-                className="hidden sm:inline-flex items-center justify-center px-8 py-3 rounded-full text-[13px] tracking-[0.15em] uppercase cursor-pointer transition-all duration-500 hover:scale-[1.03] active:scale-[0.98]"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontWeight: 400,
-                  backgroundColor: menuOpen ? "#fff" : "var(--color-deep-blue)",
-                  color: menuOpen ? "#184EA2" : "#fff",
-                }}
-              >
-                Buy Wholesale
-              </a>
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className={`freq-icon flex items-end justify-center gap-[4px] w-[40px] h-[40px] rounded-md border-2 cursor-pointer pb-[10px] transition-colors duration-500${menuOpen ? " freq-icon--open" : " freq-icon--dark"}`}
-                style={{ borderColor: menuOpen ? "#fff" : "#184EA2" }}
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-              >
-                <span className="freq-bar freq-bar--1" />
-                <span className="freq-bar freq-bar--2" />
-                <span className="freq-bar freq-bar--3" />
-              </button>
-            </div>
+            {/* Right — Buy Wholesale CTA */}
+            <a
+              href="/wholesale"
+              className="hidden sm:inline-flex items-center justify-center px-6 py-2 rounded-full text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-all duration-500 hover:scale-[1.03] active:scale-[0.98]"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontWeight: 400,
+                backgroundColor: ctaBg,
+                color: ctaColor,
+              }}
+            >
+              Buy Wholesale
+            </a>
+            {/* Mobile — placeholder to balance flex */}
+            <div className="w-[36px] sm:hidden" />
           </div>
         </div>
       </nav>
@@ -80,10 +137,7 @@ export default function SiteNav() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-35 flex items-center justify-center"
-            style={{
-              backgroundColor: "var(--color-deep-blue)",
-              top: "36px",
-            }}
+            style={{ backgroundColor: "var(--color-deep-blue)" }}
           >
             <nav className="flex flex-col items-center gap-8 md:gap-10">
               {NAV_LINKS.map((link, i) => (
@@ -97,7 +151,7 @@ export default function SiteNav() {
                   transition={{
                     duration: 0.6,
                     delay: 0.1 + i * 0.07,
-                    ease: [0.22, 1, 0.36, 1],
+                    ease: [0.22, 1, 0.36, 1] as const,
                   }}
                   className="text-white text-4xl md:text-5xl lg:text-6xl tracking-[0.04em] cursor-pointer transition-opacity duration-300 hover:opacity-60"
                   style={{
@@ -119,7 +173,7 @@ export default function SiteNav() {
                 transition={{
                   duration: 0.5,
                   delay: 0.4,
-                  ease: [0.22, 1, 0.36, 1],
+                  ease: [0.22, 1, 0.36, 1] as const,
                 }}
                 className="mt-6 sm:hidden inline-flex items-center px-8 py-3 rounded-full text-[11px] tracking-[0.18em] uppercase cursor-pointer border border-white/30 text-white transition-all duration-300 hover:bg-white/10"
                 style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}

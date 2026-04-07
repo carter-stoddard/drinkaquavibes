@@ -5,14 +5,49 @@ interface StatDef {
   end: number;
   suffix: string;
   label: string;
-  icon: string;
+  icon: React.ReactNode;
+}
+
+function IconDroplet() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+    </svg>
+  );
+}
+
+function IconWave() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0" />
+      <path d="M2 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0" opacity="0.4" />
+    </svg>
+  );
+}
+
+function IconBottle() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8 2h8v3H8z" />
+      <path d="M8 5c-2 2-3 4-3 7v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8c0-3-1-5-3-7" />
+      <path d="M8 14h8" opacity="0.4" />
+    </svg>
+  );
+}
+
+function IconBolt() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+    </svg>
+  );
 }
 
 const STATS: StatDef[] = [
-  { end: 9.5, suffix: "+", label: "pH Alkaline", icon: "💧" },
-  { end: 888, suffix: "", label: "Hz Frequency", icon: "〰️" },
-  { end: 16, suffix: "", label: "FL OZ Aluminum", icon: "🫧" },
-  { end: 100, suffix: "%", label: "Electrolyte Enhanced", icon: "⚡" },
+  { end: 9.5, suffix: "+", label: "pH Alkaline", icon: <IconDroplet /> },
+  { end: 888, suffix: "", label: "Hz Frequency", icon: <IconWave /> },
+  { end: 16, suffix: "", label: "FL OZ Aluminum", icon: <IconBottle /> },
+  { end: 100, suffix: "%", label: "Electrolyte Enhanced", icon: <IconBolt /> },
 ];
 
 const DURATION = 1800; // all counters finish together
@@ -54,7 +89,7 @@ function AnimatedStat({ stat, started }: { stat: StatDef; started: boolean }) {
 
   return (
     <div>
-      <span className="block text-lg mb-2">{stat.icon}</span>
+      <span className="block mb-3 text-black/30">{stat.icon}</span>
       <span
         className="block text-3xl md:text-4xl lg:text-[42px] leading-none tracking-[0.01em] mb-1.5"
         style={{
