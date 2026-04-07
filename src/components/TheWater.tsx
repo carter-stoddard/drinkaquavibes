@@ -118,11 +118,10 @@ export default function TheWater() {
   const inView = useInView(sectionRef, { once: true, margin: "-15%" });
 
   return (
-    <div className="bg-white px-3 md:px-5 py-3 md:py-5">
     <section
       ref={sectionRef}
       id="the-water"
-      className="relative bg-[#F2F2F2] py-28 md:py-40 lg:py-52 rounded-2xl md:rounded-3xl"
+      className="relative bg-white py-28 md:py-40 lg:py-52"
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -232,6 +231,5 @@ export default function TheWater() {
         </div>
       </div>
     </section>
-    </div>
   );
 }

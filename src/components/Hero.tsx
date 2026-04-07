@@ -181,12 +181,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Wave divider */}
+      {/* Wave divider — taller on mobile to cover bottom */}
       <div className="absolute -bottom-1 left-0 right-0 z-10">
         <svg
           viewBox="0 0 1440 80"
           preserveAspectRatio="none"
-          className="block w-full h-[40px] md:h-[60px] lg:h-[80px]"
+          className="block w-full h-[100px] md:h-[60px] lg:h-[80px]"
         >
           <path
             d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"

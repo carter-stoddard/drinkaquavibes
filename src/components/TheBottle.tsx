@@ -12,11 +12,10 @@ export default function TheBottle() {
   });
 
   return (
-    <div className="bg-white px-3 md:px-5 py-3 md:py-5">
     <section
       ref={sectionRef}
       id="the-bottle"
-      className="relative bg-[#F2F2F2] py-28 md:py-40 lg:py-52 overflow-hidden rounded-2xl md:rounded-3xl"
+      className="relative bg-white py-28 md:py-40 lg:py-52 overflow-hidden"
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
@@ -92,6 +91,5 @@ export default function TheBottle() {
         </div>
       </div>
     </section>
-    </div>
   );
 }
