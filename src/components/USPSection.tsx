@@ -22,17 +22,17 @@ const USPS: USP[] = [
   },
   {
     id: 2,
-    label: "888 Hz Frequency",
-    subline:
-      "Stored in a warehouse vibrating at 888 Hz — the frequency of abundance. Not a claim. A frequency.",
-    bgImage: "",
-  },
-  {
-    id: 3,
     label: "Alkaline + Electrolytes",
     subline:
       "Enhanced with electrolytes and tuned to an alkaline pH. Hydration that your body actually absorbs.",
     bgImage: "/Alkaline.png",
+  },
+  {
+    id: 3,
+    label: "888 Hz Frequency",
+    subline:
+      "Stored in a warehouse vibrating at 888 Hz — the frequency of abundance. Not a claim. A frequency.",
+    bgImage: "/888HZ.png",
   },
   {
     id: 4,
@@ -66,13 +66,13 @@ function USPPanel({ usp }: { usp: USP }) {
       {/* Text — center center */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
         <h2
-          className="text-[36px] md:text-[72px] lg:text-[80px] text-white leading-[1.05] tracking-[0.01em]"
+          className="text-[48px] md:text-[80px] lg:text-[96px] text-white leading-[1.05] tracking-[0.01em]"
           style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
         >
           {usp.label}
         </h2>
         <p
-          className="mt-3 text-[12px] md:text-[15px] text-white/70 leading-[1.6] max-w-[260px] md:max-w-[320px] mx-auto"
+          className="mt-4 text-[14px] md:text-[17px] text-white/70 leading-[1.6] max-w-[300px] md:max-w-[400px] mx-auto"
           style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
         >
           {usp.subline}
