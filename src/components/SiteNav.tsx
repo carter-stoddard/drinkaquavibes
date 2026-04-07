@@ -66,7 +66,6 @@ export default function SiteNav() {
   // When menu is open, always white. Otherwise, based on background.
   const isWhite = menuOpen || onDark;
   const borderColor = isWhite ? "#fff" : "#184EA2";
-  const logoFilter = isWhite ? "none" : BLUE_FILTER;
   const ctaBg = isWhite ? "#fff" : "#184EA2";
   const ctaColor = isWhite ? "#184EA2" : "#fff";
   const freqClass = isWhite ? "" : " freq-icon--dark";
@@ -80,13 +79,19 @@ export default function SiteNav() {
       >
         {/* ── Mobile Nav ── */}
         <div className="md:hidden flex items-center justify-between px-4 pt-3 h-14">
-          {/* Left — Logo */}
-          <a href="/" className="select-none">
+          {/* Left — Logo (cross-fade white/blue) */}
+          <a href="/" className="select-none relative h-8">
             <img
               src="/Aqua-Vibes-Logo-Web.png"
               alt="Aqua Vibes"
-              className="h-8 w-auto object-contain transition-all duration-500"
-              style={{ filter: logoFilter }}
+              className="h-8 w-auto object-contain transition-opacity duration-700"
+              style={{ opacity: isWhite ? 1 : 0 }}
+            />
+            <img
+              src="/Aqua-Vibes-Logo-Web.png"
+              alt=""
+              className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-700"
+              style={{ filter: BLUE_FILTER, opacity: isWhite ? 0 : 1 }}
             />
           </a>
 
@@ -127,13 +132,19 @@ export default function SiteNav() {
               <span className="freq-bar freq-bar--5" />
             </button>
 
-            {/* Center — Logo */}
-            <a href="/" className="absolute left-1/2 -translate-x-1/2 select-none">
+            {/* Center — Logo (cross-fade white/blue) */}
+            <a href="/" className="absolute left-1/2 -translate-x-1/2 select-none h-10" style={{ zIndex: 1 }}>
               <img
                 src="/Aqua-Vibes-Logo-Web.png"
                 alt="Aqua Vibes"
-                className="h-10 w-auto object-contain transition-all duration-500"
-                style={{ filter: logoFilter }}
+                className="h-10 w-auto object-contain transition-opacity duration-700"
+                style={{ opacity: isWhite ? 1 : 0 }}
+              />
+              <img
+                src="/Aqua-Vibes-Logo-Web.png"
+                alt=""
+                className="absolute top-0 left-0 h-10 w-auto object-contain transition-opacity duration-700"
+                style={{ filter: BLUE_FILTER, opacity: isWhite ? 0 : 1 }}
               />
             </a>
 
