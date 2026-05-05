@@ -551,24 +551,18 @@ function ExpandedCard({
               padding: 24,
             }}
           >
-            <div className="flex items-start gap-3">
+            <div>
               <div
-                className="w-10 h-10 rounded-full flex-shrink-0"
-                style={{ background: "rgba(255,255,255,0.25)" }}
-              />
-              <div className="min-w-0">
-                <div
-                  className="text-white text-[13px]"
-                  style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-                >
-                  {card.customer.name}
-                </div>
-                <div
-                  className="text-white/70 text-[11px]"
-                  style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
-                >
-                  {card.customer.city}
-                </div>
+                className="text-white text-[13px]"
+                style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
+              >
+                {card.customer.name}
+              </div>
+              <div
+                className="text-white/70 text-[11px]"
+                style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
+              >
+                {card.customer.city}
               </div>
             </div>
             <p
@@ -651,19 +645,27 @@ export default function USPSection() {
     if (!scrollEl) return;
     const update = () => {
       const max = scrollEl.scrollWidth - scrollEl.clientWidth;
-      const progress = max > 0 ? scrollEl.scrollLeft / max : 0;
+      if (max <= 0) {
+        setCarouselNav({ progress: 0, atStart: true, atEnd: false });
+        return;
+      }
+      const progress = scrollEl.scrollLeft / max;
       setCarouselNav({
         progress: Math.max(0, Math.min(1, progress)),
         atStart: scrollEl.scrollLeft <= 1,
-        atEnd: max <= 0 || scrollEl.scrollLeft >= max - 1,
+        atEnd: scrollEl.scrollLeft >= max - 1,
       });
     };
     update();
     scrollEl.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
+    const ro = new ResizeObserver(update);
+    ro.observe(scrollEl);
+    Array.from(scrollEl.children).forEach((child) => ro.observe(child as Element));
     return () => {
       scrollEl.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
+      ro.disconnect();
     };
   }, [scrollEl]);
 
