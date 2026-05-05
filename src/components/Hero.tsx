@@ -1,198 +1,90 @@
-import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-const FRAME_COUNT = 60;
-const FPS = 24;
-const PREFIX = "hf_20260407_180646_60097453-964d-4542-9cf3-d8913297d8b3_";
+const ease = [0.22, 1, 0.36, 1] as const;
 
-const FRAMES = Array.from(
-  { length: FRAME_COUNT },
-  (_, i) => `/hero-frames/${PREFIX}${String(i).padStart(3, "0")}.jpg`
-);
+interface HeroProps {
+  image?: string;
+  mobileImageClass?: string;
+  headline?: React.ReactNode;
+  ctaLabel?: string;
+  ctaHref?: string;
+  showLearnMore?: boolean;
+}
 
-export default function Hero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<HTMLImageElement[]>([]);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    const images: HTMLImageElement[] = [];
-    let loadedCount = 0;
-
-    FRAMES.forEach((src, i) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === FRAME_COUNT && !cancelled) {
-          imagesRef.current = images;
-          setLoaded(true);
-        }
-      };
-      images[i] = img;
-    });
-
-    return () => { cancelled = true; };
-  }, []);
-
-  useEffect(() => {
-    if (!loaded) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const images = imagesRef.current;
-    let frame = 0;
-    let animId: number;
-    let lastTime = 0;
-    const interval = 1000 / FPS;
-
-    const drawFrame = () => {
-      const img = images[frame];
-      if (!img) return;
-
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-
-      const cw = canvas.offsetWidth;
-      const ch = canvas.offsetHeight;
-
-      const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-      const w = img.naturalWidth * scale;
-      const h = img.naturalHeight * scale;
-      const x = (cw - w) / 2;
-      const y = (ch - h) / 2;
-
-      ctx.drawImage(img, x, y, w, h);
-    };
-
-    const loop = (time: number) => {
-      animId = requestAnimationFrame(loop);
-      const delta = time - lastTime;
-      if (delta >= interval) {
-        lastTime = time - (delta % interval);
-        drawFrame();
-        frame = (frame + 1) % FRAME_COUNT;
-      }
-    };
-
-    animId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animId);
-  }, [loaded]);
-
+export default function Hero({
+  image = "/AQUA-HERO-FINAL.png",
+  mobileImageClass = "object-bottom origin-bottom",
+  headline = (
+    <>
+      Hydrate with <em>Intention</em>
+    </>
+  ),
+  ctaLabel = "Learn More",
+  ctaHref = "#usp",
+  showLearnMore = false,
+}: HeroProps = {}) {
   return (
     <section
-      className="relative w-full overflow-hidden bg-black"
-      style={{
-        minHeight: "100dvh",
-        paddingTop: "5rem",
-      }}
+      className="relative overflow-hidden aspect-[4/5] lg:aspect-[2/1] mx-3 mt-[88px] mb-3 bg-white"
+      style={{ borderRadius: "12px" }}
     >
-      {/* Frame sequence canvas */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full opacity-80"
+      {/* Hero image — full background, both mobile and desktop */}
+      <motion.img
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease }}
+        src={image}
+        alt=""
+        aria-hidden
+        className={`absolute inset-0 w-full h-full object-contain ${mobileImageClass} scale-[1.4] -translate-x-[35%] lg:translate-x-0 lg:scale-100 lg:origin-center lg:object-left`}
       />
 
-      {/* Fallback static image while frames load */}
-      {!loaded && (
-        <img
-          src="/aqua-vibes-hero.png"
-          alt="Aqua Vibes hero"
-          className="absolute inset-0 w-full h-full object-cover lg:object-[center_70%] opacity-80"
-        />
-      )}
-
-      {/* Overlay for text legibility */}
-      <div className="absolute inset-0 bg-black/20" />
-
-      {/* Mobile: center-center */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center px-6 md:hidden -mt-20">
-        <div className="text-center">
-          <h1
-            className="text-[44px] leading-[1.05] tracking-[0.02em] text-white"
+      {/* Copy */}
+      <div className="relative h-full max-w-[1340px] mx-auto px-6 lg:px-10">
+        <div className="h-full grid grid-cols-1 lg:grid-cols-2 lg:items-center">
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left pt-10 lg:pt-0 max-w-[600px] mx-auto lg:mx-0">
+            {/* copy */}
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease }}
+            className="text-[38px] md:text-[56px] lg:text-[72px] xl:text-[88px] leading-[1.05] lg:leading-[1.02] tracking-[-0.005em] text-[#0d1320] mt-[10px] lg:mt-0 mb-8 lg:mb-12"
             style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
           >
-            Hydrate with<br />Intention
-          </h1>
-          <div className="flex flex-col items-center gap-3 mt-6">
-            <motion.a
-              href="#usp"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-              className="w-full max-w-[200px] h-[42px] flex items-center justify-center rounded-full border border-white text-white text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-colors duration-300 hover:bg-white/10"
+            {headline}
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease }}
+            className="flex flex-col items-center lg:items-start gap-4"
+          >
+            <a
+              href={ctaHref}
+              onClick={(e) => {
+                if (ctaHref.startsWith("#")) {
+                  e.preventDefault();
+                  document.getElementById(ctaHref.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+              }}
+              className="inline-flex items-center justify-center px-8 lg:px-11 h-[48px] lg:h-[60px] rounded-full bg-[#184EA2] text-white text-[13px] lg:text-[15px] tracking-[0.18em] uppercase transition-colors duration-300 hover:bg-[#205fbf]"
               style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
             >
-              Learn More
-            </motion.a>
-            <motion.a
-              href="/wholesale"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45, ease: "easeOut" }}
-              className="w-full max-w-[200px] h-[42px] flex items-center justify-center rounded-full bg-[#184EA2] text-white text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-colors duration-300 hover:bg-[#1a5ab8]"
-              style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-            >
-              Buy Wholesale
-            </motion.a>
-          </div>
+              {ctaLabel}
+            </a>
+            {showLearnMore && (
+              <a
+                href="#the-water"
+                className="text-[14px] lg:text-[15px] text-[#184EA2] hover:opacity-70 transition-opacity duration-300"
+                style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
+              >
+                Learn More →
+              </a>
+            )}
+          </motion.div>
         </div>
       </div>
-
-      {/* Desktop: bottom-right */}
-      <div className="hidden md:block absolute bottom-28 right-12 lg:right-16 z-10 text-right">
-        <h1
-          className="text-[64px] lg:text-[80px] leading-[1.05] tracking-[0.02em] text-white"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 300,
-          }}
-        >
-          Hydrate with
-          <br />
-          Intention
-        </h1>
-
-        <div className="flex flex-row items-center justify-end gap-3 mt-6">
-          <motion.a
-            href="#usp"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            className="w-[160px] h-[48px] flex items-center justify-center rounded-full border border-white text-white text-[13px] tracking-[0.15em] uppercase cursor-pointer transition-colors duration-300 hover:bg-white/10"
-            style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-          >
-            Learn More
-          </motion.a>
-          <motion.a
-            href="/wholesale"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.45, ease: "easeOut" }}
-            className="w-[160px] h-[48px] flex items-center justify-center rounded-full bg-[#184EA2] text-white text-[13px] tracking-[0.15em] uppercase cursor-pointer transition-colors duration-300 hover:bg-[#1a5ab8]"
-            style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-          >
-            Buy Wholesale
-          </motion.a>
-        </div>
-      </div>
-
-      {/* Wave divider — taller on mobile to cover bottom */}
-      <div className="absolute -bottom-1 left-0 right-0 z-10">
-        <svg
-          viewBox="0 0 1440 80"
-          preserveAspectRatio="none"
-          className="block w-full h-[100px] md:h-[60px] lg:h-[80px]"
-        >
-          <path
-            d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"
-            fill="#fff"
-          />
-        </svg>
       </div>
     </section>
   );

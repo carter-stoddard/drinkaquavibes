@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="brandBlue" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="
+        0 0 0 0 0.094
+        0 0 0 0 0.306
+        0 0 0 0 0.635
+        0 0 0 1 0"/>
+    </filter>
+  </defs>
+  <image href="/Aqua-Vibes-Logo-Web.png" filter="url(#brandBlue)" x="0" y="0" width="64" height="64" preserveAspectRatio="xMidYMid meet"/>
+</svg>

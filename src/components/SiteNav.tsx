@@ -2,21 +2,29 @@ import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const NAV_LINKS = [
-  { label: "Benefits", href: "#usp" },
-  { label: "Our Water", href: "#the-water" },
-  { label: "The Frequency", href: "#the-frequency" },
-  { label: "Sustainability", href: "#the-bottle" },
-  { label: "Reviews", href: "#social-proof" },
+  { label: "Benefits", href: "/#usp" },
+  { label: "Water", href: "/#the-water" },
+  { label: "Frequency", href: "/#the-frequency" },
+  { label: "Sustainability", href: "/#sustainability" },
+  { label: "Reviews", href: "/#reviews" },
 ];
 
-const DARK_SECTIONS = ["usp", "the-frequency"];
+function scrollToHash(href: string) {
+  const i = href.indexOf("#");
+  if (i === -1) return false;
+  const id = href.slice(i + 1);
+  const el = document.getElementById(id);
+  if (!el) return false;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  return true;
+}
 
 const BLUE_FILTER =
   "brightness(0) saturate(100%) invert(24%) sepia(69%) saturate(1870%) hue-rotate(199deg) brightness(97%) contrast(87%)";
 
 export default function SiteNav() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [onDark, setOnDark] = useState(true); // start on dark (hero)
+  const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -27,45 +35,15 @@ export default function SiteNav() {
     }
   }, [menuOpen]);
 
-  // Detect if nav is over a dark section
   useEffect(() => {
-    const check = () => {
-      const navEl = navRef.current;
-      if (!navEl) return;
-      const navMid = navEl.getBoundingClientRect().bottom;
-
-      // Check if we're still in the hero (above first section)
-      const hero = document.querySelector("section");
-      if (hero) {
-        const heroRect = hero.getBoundingClientRect();
-        if (heroRect.top <= navMid && heroRect.bottom >= navMid) {
-          setOnDark(true);
-          return;
-        }
-      }
-
-      // Check dark sections by ID
-      let dark = false;
-      for (const id of DARK_SECTIONS) {
-        const el = document.getElementById(id);
-        if (!el) continue;
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= navMid && rect.bottom >= navMid) {
-          dark = true;
-          break;
-        }
-      }
-      setOnDark(dark);
-    };
-
+    const check = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", check, { passive: true });
     check();
     return () => window.removeEventListener("scroll", check);
   }, []);
 
-  // When menu is open, always white. Otherwise, based on background.
-  const isWhite = menuOpen || onDark;
-  const borderColor = isWhite ? "#fff" : "#184EA2";
+  const isWhite = menuOpen;
+  const textColor = isWhite ? "#fff" : "#184EA2";
   const ctaBg = isWhite ? "#fff" : "#184EA2";
   const ctaColor = isWhite ? "#184EA2" : "#fff";
   const freqClass = isWhite ? "" : " freq-icon--dark";
@@ -74,145 +52,165 @@ export default function SiteNav() {
     <>
       <nav
         ref={navRef}
-        className="fixed left-0 right-0 z-40"
-        style={{ top: "0" }}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 50,
+          backgroundColor: "rgba(255, 255, 255, 0.85)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          borderBottom: `1px solid ${scrolled ? "rgba(184, 200, 220, 0.35)" : "transparent"}`,
+          transition: "border-color 0.4s ease",
+        }}
       >
-        {/* ── Mobile Nav ── */}
-        <div className="md:hidden flex items-center justify-between px-4 pt-3 h-14">
-          {/* Left — Logo (cross-fade white/blue) */}
-          <a href="/" className="select-none relative h-8">
+        <div className="max-w-[1400px] mx-auto flex items-center justify-between lg:grid lg:grid-cols-3 px-5 lg:px-8 h-16 lg:h-20">
+          {/* LEFT — Logo */}
+          <a href="/" className="select-none relative h-10 lg:h-12 lg:justify-self-start">
             <img
               src="/Aqua-Vibes-Logo-Web.png"
               alt="Aqua Vibes"
-              className="h-8 w-auto object-contain transition-opacity duration-700"
+              className="h-10 lg:h-12 w-auto object-contain transition-opacity duration-700"
               style={{ opacity: isWhite ? 1 : 0 }}
             />
             <img
               src="/Aqua-Vibes-Logo-Web.png"
               alt=""
-              className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-700"
+              className="absolute inset-0 h-10 lg:h-12 w-auto object-contain transition-opacity duration-700"
               style={{ filter: BLUE_FILTER, opacity: isWhite ? 0 : 1 }}
             />
           </a>
 
-          {/* Right — Menu Toggle with square border */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className={`freq-icon flex items-end justify-center gap-[2px] w-[40px] h-[40px] rounded-md border-2 cursor-pointer pb-[9px] transition-colors duration-500${menuOpen ? " freq-icon--open" : freqClass}`}
-            style={{ borderColor }}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            <span className="freq-bar freq-bar--1" />
-            <span className="freq-bar freq-bar--2" />
-            <span className="freq-bar freq-bar--3" />
-            <span className="freq-bar freq-bar--4" />
-            <span className="freq-bar freq-bar--5" />
-          </button>
-        </div>
+          {/* CENTER — Inline nav links (lg+ only) */}
+          <div className="hidden lg:flex items-center justify-center gap-8 xl:gap-10 lg:justify-self-center">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={(e) => {
+                  if (scrollToHash(link.href)) e.preventDefault();
+                }}
+                className="text-[12px] tracking-[0.18em] uppercase transition-opacity duration-300 hover:opacity-60"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 400,
+                  color: textColor,
+                  transition: "color 0.5s ease, opacity 0.3s ease",
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
 
-        {/* ── Desktop Nav — pill bar ── */}
-        <div className="hidden md:block px-8 lg:px-12 pt-4">
-          <div
-            className="flex items-center justify-between px-6 h-16 rounded-full transition-all duration-500"
-            style={{
-              border: `2px solid ${borderColor}`,
-              backgroundColor: "transparent",
-            }}
-          >
-            {/* Left — Menu Toggle */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className={`freq-icon flex items-end justify-center gap-[2px] w-[36px] h-[36px] cursor-pointer pb-[8px] transition-colors duration-500${menuOpen ? " freq-icon--open" : freqClass}`}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-            >
-              <span className="freq-bar freq-bar--1" />
-              <span className="freq-bar freq-bar--2" />
-              <span className="freq-bar freq-bar--3" />
-              <span className="freq-bar freq-bar--4" />
-              <span className="freq-bar freq-bar--5" />
-            </button>
-
-            {/* Center — Logo (cross-fade white/blue) */}
-            <a href="/" className="absolute left-1/2 -translate-x-1/2 select-none h-10" style={{ zIndex: 1 }}>
-              <img
-                src="/Aqua-Vibes-Logo-Web.png"
-                alt="Aqua Vibes"
-                className="h-10 w-auto object-contain transition-opacity duration-700"
-                style={{ opacity: isWhite ? 1 : 0 }}
-              />
-              <img
-                src="/Aqua-Vibes-Logo-Web.png"
-                alt=""
-                className="absolute top-0 left-0 h-10 w-auto object-contain transition-opacity duration-700"
-                style={{ filter: BLUE_FILTER, opacity: isWhite ? 0 : 1 }}
-              />
-            </a>
-
-            {/* Right — Buy Wholesale CTA */}
+          {/* RIGHT — CTA (lg+) / Hamburger (below lg) */}
+          <div className="flex items-center gap-3 lg:justify-self-end">
             <a
               href="/wholesale"
-              className="inline-flex items-center justify-center px-6 py-2 rounded-full text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-all duration-500 hover:scale-[1.03] active:scale-[0.98]"
+              className="hidden lg:inline-flex items-center justify-center px-6 h-11 rounded-full text-[11px] tracking-[0.15em] uppercase cursor-pointer transition-all duration-500 hover:bg-[rgba(24,78,162,0.08)] active:scale-[0.98]"
               style={{
                 fontFamily: "var(--font-body)",
                 fontWeight: 400,
-                backgroundColor: ctaBg,
-                color: ctaColor,
+                backgroundColor: "transparent",
+                color: "#184EA2",
+                border: "1px solid #184EA2",
               }}
             >
               Buy Wholesale
             </a>
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full cursor-pointer transition-opacity duration-300 hover:opacity-70"
+              style={{
+                border: `1px solid ${textColor === "#fff" ? "rgba(255,255,255,0.5)" : "rgba(24, 78, 162, 0.4)"}`,
+                color: textColor,
+                background: "transparent",
+              }}
+              aria-label="Open menu"
+            >
+              <svg width="18" height="14" viewBox="0 0 24 18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M3 5h18" />
+                <path d="M3 13h18" />
+              </svg>
+            </button>
           </div>
         </div>
       </nav>
 
-      {/* Full-screen overlay menu */}
+      {/* Full-screen overlay menu (mobile only) */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-35 flex items-center justify-center"
-            style={{ backgroundColor: "var(--color-deep-blue)" }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[60] lg:hidden bg-white"
           >
-            <nav className="flex flex-col items-center gap-8 md:gap-10">
+            {/* Top bar — logo + close */}
+            <div className="flex items-center justify-between px-5 h-16">
+              <a href="/" onClick={() => setMenuOpen(false)} className="h-10">
+                <img
+                  src="/Aqua-Vibes-Logo-Web.png"
+                  alt="Aqua Vibes"
+                  className="h-10 w-auto object-contain"
+                  style={{ filter: BLUE_FILTER }}
+                />
+              </a>
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="inline-flex items-center justify-center w-11 h-11 rounded-full cursor-pointer transition-opacity duration-300 hover:opacity-70"
+                style={{ border: "1px solid rgba(24, 78, 162, 0.4)", color: "#184EA2" }}
+                aria-label="Close menu"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M5 5l14 14M19 5L5 19" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Vertical link list */}
+            <nav className="flex flex-col px-5 mt-6">
               {NAV_LINKS.map((link, i) => (
                 <motion.a
                   key={link.label}
                   href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
+                  onClick={(e) => {
+                    setMenuOpen(false);
+                    if (scrollToHash(link.href)) e.preventDefault();
+                  }}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
                   transition={{
-                    duration: 0.6,
-                    delay: 0.1 + i * 0.07,
+                    duration: 0.45,
+                    delay: 0.12 + i * 0.05,
                     ease: [0.22, 1, 0.36, 1] as const,
                   }}
-                  className="text-white text-4xl md:text-5xl lg:text-6xl tracking-[0.04em] cursor-pointer transition-opacity duration-300 hover:opacity-60"
+                  className="py-4 text-[40px] leading-[1.05] cursor-pointer transition-opacity duration-300 hover:opacity-60"
                   style={{
                     fontFamily: "var(--font-display)",
                     fontWeight: 300,
+                    color: "#0d1320",
                   }}
                 >
                   {link.label}
                 </motion.a>
               ))}
 
-              {/* Mobile wholesale CTA inside menu */}
               <motion.a
                 href="/wholesale"
                 onClick={() => setMenuOpen(false)}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{
-                  duration: 0.5,
-                  delay: 0.4,
+                  duration: 0.45,
+                  delay: 0.45,
                   ease: [0.22, 1, 0.36, 1] as const,
                 }}
-                className="mt-6 sm:hidden inline-flex items-center px-8 py-3 rounded-full text-[11px] tracking-[0.18em] uppercase cursor-pointer border border-white/30 text-white transition-all duration-300 hover:bg-white/10"
+                className="mt-10 self-start inline-flex items-center justify-center px-8 h-12 rounded-full bg-[#184EA2] text-white text-[12px] tracking-[0.18em] uppercase cursor-pointer transition-opacity duration-300 hover:opacity-85"
                 style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
               >
                 Buy Wholesale

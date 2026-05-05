@@ -5,11 +5,11 @@ import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import SiteNav from "./components/SiteNav";
 import Hero from "./components/Hero";
 import USPSection from "./components/USPSection";
-import TheWater from "./components/TheWater";
+import ProductSection from "./components/ProductSection";
 import TheFrequency from "./components/TheFrequency";
-import TheBottle from "./components/TheBottle";
-import SocialProof from "./components/SocialProof";
-import ImageGrid from "./components/ImageGrid";
+import SustainabilitySection from "./components/SustainabilitySection";
+import ReviewsSection from "./components/ReviewsSection";
+import BentoSection from "./components/BentoSection";
 import Footer from "./components/Footer";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -22,11 +22,11 @@ export default function App() {
       <SiteNav />
       <Hero />
       <USPSection />
-      <TheWater />
+      <ProductSection />
       <TheFrequency />
-      <TheBottle />
-      <SocialProof />
-      <ImageGrid />
+      <SustainabilitySection />
+      <ReviewsSection />
+      <BentoSection />
       <Footer />
     </>
   );

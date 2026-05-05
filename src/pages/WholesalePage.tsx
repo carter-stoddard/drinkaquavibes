@@ -1,25 +1,35 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { getSupabase } from "../lib/supabase";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import SiteNav from "../components/SiteNav";
+import Hero from "../components/Hero";
+import WholesaleRetailerSection from "../components/WholesaleRetailerSection";
+import Footer from "../components/Footer";
 
 const STORE_TYPES = [
-  "Grocery / Supermarket",
-  "Specialty Health",
-  "Gym / Fitness",
-  "Cafe / Restaurant",
-  "Online Retailer",
+  "Yoga & Wellness Studio",
+  "Gym & Fitness Center",
+  "Boutique Hotel",
+  "Spa & Retreat",
+  "Specialty Café",
   "Other",
 ];
 
-const LOCATION_COUNTS = ["1", "2–5", "6–20", "20+"];
+const LOCATION_COUNTS = ["1", "2–5", "6–10", "10+"];
 
-const MONTHLY_UNITS = [
-  "Under 500",
-  "500–2,000",
-  "2,000–10,000",
-  "10,000+",
+const MONTHLY_UNITS = ["Under 50", "50–100", "100–500", "500+"];
+
+const STATES = [
+  "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+  "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia",
+  "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
+  "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+  "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire",
+  "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota",
+  "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
+  "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
+  "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
+  "Other / International",
 ];
 
 interface FormData {
@@ -48,12 +58,115 @@ const INITIAL: FormData = {
   message: "",
 };
 
-const fieldLabel =
-  "block text-[10px] tracking-[0.18em] uppercase mb-1 text-[#184EA2]";
-const fieldInput =
-  "w-full border-0 border-b border-black/15 bg-transparent text-[13px] text-black h-[36px] outline-none transition-colors duration-300 focus:border-[#184EA2]";
-const selectClass =
-  "w-full border-0 border-b border-black/15 bg-transparent text-[13px] text-black h-[36px] outline-none transition-colors duration-300 focus:border-[#184EA2] appearance-none cursor-pointer";
+const labelStyle: React.CSSProperties = {
+  fontFamily: "var(--font-body)",
+  fontWeight: 400,
+  fontSize: 10,
+  color: "#8a9aaa",
+  textTransform: "uppercase",
+  letterSpacing: "0.1em",
+  marginBottom: 6,
+  display: "block",
+};
+
+const inputStyle: React.CSSProperties = {
+  background: "#ffffff",
+  border: "0.5px solid #dce6f0",
+  borderRadius: 12,
+  padding: "16px 20px",
+  fontFamily: "var(--font-body)",
+  fontWeight: 300,
+  fontSize: 14,
+  color: "#0f1923",
+  width: "100%",
+  outline: "none",
+  transition: "border-color 0.2s ease",
+};
+
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex-1 min-w-0">
+      <label style={labelStyle}>{label}</label>
+      {children}
+    </div>
+  );
+}
+
+function ChevronDown() {
+  return (
+    <svg
+      style={{ position: "absolute", right: 18, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "#8a9aaa" }}
+      width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+function ContactRow({
+  href,
+  icon,
+  text,
+  external,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  text: string;
+  external?: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      className="group flex items-center gap-3 transition-colors duration-200"
+      style={{ color: "#0f1923" }}
+    >
+      <span style={{ color: "#184EA2", display: "inline-flex" }}>{icon}</span>
+      <span
+        className="group-hover:text-[#184EA2] transition-colors duration-200"
+        style={{
+          fontFamily: "var(--font-body)",
+          fontWeight: 300,
+          fontSize: 15,
+          flex: 1,
+        }}
+      >
+        {text}
+      </span>
+      {external && (
+        <span
+          className="group-hover:text-[#184EA2] transition-colors duration-200"
+          style={{ color: "#8a9aaa", fontSize: 14 }}
+        >
+          ↗
+        </span>
+      )}
+    </a>
+  );
+}
+
+const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+  <div
+    style={{
+      fontFamily: "var(--font-body)",
+      fontWeight: 400,
+      fontSize: 10,
+      color: "#184EA2",
+      textTransform: "uppercase",
+      letterSpacing: "0.12em",
+      marginBottom: 20,
+    }}
+  >
+    {children}
+  </div>
+);
 
 export default function WholesalePage() {
   useSmoothScroll();
@@ -68,12 +181,14 @@ export default function WholesalePage() {
     e.preventDefault();
     setStatus("loading");
     try {
-      const { error } = await getSupabase().from("wholesale_inquiries").insert({
-        ...form,
-        created_at: new Date().toISOString(),
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
-      if (error) throw error;
+      if (!res.ok) throw new Error("Email failed");
       setStatus("success");
+      setForm(INITIAL);
     } catch {
       setStatus("error");
     }
@@ -83,186 +198,384 @@ export default function WholesalePage() {
     <>
       <SiteNav />
 
-      {/* ── Hero Section ── */}
-      <section
-        className="relative w-full overflow-hidden bg-black flex items-center justify-center"
-        style={{ minHeight: "100dvh" }}
-      >
-        {/* Background image — replace src when you have the image */}
-        <img
-          src="/aqua-vibes-hero.png"
-          alt="Wholesale hero"
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
-        />
-        <div className="absolute inset-0 bg-black/30" />
+      {/* ── Hero (wholesale variant) ── */}
+      <Hero
+        image="/AQUA-HERO-WHOLESALE.png"
+        mobileImageClass="object-left-bottom origin-bottom-left"
+        headline={<>Premium Water. <em>Zero Complexity.</em></>}
+        ctaLabel="Apply for Wholesale"
+        ctaHref="#wholesale-form"
+        showLearnMore={false}
+      />
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
-          className="relative z-10 text-center px-6 max-w-3xl"
-        >
-          <span
-            className="block text-[11px] md:text-[12px] tracking-[0.3em] uppercase text-white/50 mb-6"
-            style={{ fontFamily: "var(--font-accent)", fontWeight: 300 }}
-          >
-            Wholesale
-          </span>
-          <h1
-            className="text-[48px] md:text-[72px] lg:text-[96px] leading-[1.05] tracking-[0.01em] text-white mb-6"
-            style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
-          >
-            Partner With Us
-          </h1>
-          <p
-            className="text-[15px] md:text-[17px] leading-[1.7] text-white/70 max-w-[500px] mx-auto"
-            style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
-          >
-            Bring Aqua Vibes to your shelves. Fill out the form below and our
-            team will be in touch within 48 hours.
-          </p>
-          {/* Scroll arrow */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.6 }}
-            className="mt-10"
-          >
-            <a href="#wholesale-form" className="inline-block text-white/40 hover:text-white/70 transition-colors">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 5v14M5 12l7 7 7-7" />
-              </svg>
-            </a>
-          </motion.div>
-        </motion.div>
-      </section>
+      {/* ── Retailer category showcase ── */}
+      <WholesaleRetailerSection />
 
       {/* ── Form Section ── */}
-      <section id="wholesale-form" className="bg-white py-20 md:py-28 lg:py-36">
-        <div className="mx-auto max-w-3xl px-6 md:px-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
-            className="text-center mb-12 md:mb-16"
+      <section
+        id="wholesale-form"
+        style={{ background: "#ffffff" }}
+        className="py-[60px] lg:py-[100px]"
+      >
+        <div className="max-w-[1400px] mx-auto px-8">
+          <div
+            className="grid grid-cols-1 lg:grid-cols-[60%_40%] items-start"
+            style={{ gap: 80 }}
           >
-            <h2
-              className="text-3xl md:text-4xl lg:text-[48px] leading-[1.1] tracking-[0.01em] text-[#184EA2] mb-4"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
+            {/* LEFT — form */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
             >
-              Get in Touch
-            </h2>
-            <p
-              className="text-[14px] md:text-[15px] text-black/50 leading-[1.7]"
-              style={{ fontFamily: "var(--font-body)", fontWeight: 300 }}
-            >
-              Tell us about your business and we'll craft the perfect wholesale plan.
-            </p>
-          </motion.div>
-
-          {status === "success" ? (
-            <div className="text-center py-16">
+              <div
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 400,
+                  fontSize: 11,
+                  color: "#184EA2",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  marginBottom: 16,
+                }}
+              >
+                Get in Touch
+              </div>
+              <h2
+                className="text-[36px] lg:text-[52px]"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 300,
+                  color: "#0f1923",
+                  lineHeight: 1.1,
+                }}
+              >
+                Let's talk <em>wholesale.</em>
+              </h2>
               <p
-                className="text-[28px] md:text-[36px] leading-[1.2] text-[#184EA2]"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 300,
+                  fontSize: 14,
+                  color: "#8a9aaa",
+                  marginTop: 12,
+                  marginBottom: 40,
+                }}
               >
-                Thank you.
-                <br />
-                We'll be in touch within 48 hours.
+                Fill out the form and we'll get back to you within 24 hours.
               </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-              {/* Name row */}
-              <div className="flex flex-col sm:flex-row gap-6">
-                <div className="flex-1">
-                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>First Name</label>
-                  <input type="text" required value={form.first_name} onChange={set("first_name")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
-                </div>
-                <div className="flex-1">
-                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Last Name</label>
-                  <input type="text" required value={form.last_name} onChange={set("last_name")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
-                </div>
-              </div>
 
-              {/* Company */}
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                {/* Row 1 — First + Last */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Field label="First Name">
+                    <input
+                      type="text"
+                      required
+                      value={form.first_name}
+                      onChange={set("first_name")}
+                      style={inputStyle}
+                      onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                    />
+                  </Field>
+                  <Field label="Last Name">
+                    <input
+                      type="text"
+                      required
+                      value={form.last_name}
+                      onChange={set("last_name")}
+                      style={inputStyle}
+                      onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                    />
+                  </Field>
+                </div>
+
+                {/* Row 2 — Company */}
+                <Field label="Company / Business Name">
+                  <input
+                    type="text"
+                    required
+                    value={form.company}
+                    onChange={set("company")}
+                    style={inputStyle}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                  />
+                </Field>
+
+                {/* Row 3 — Email + Phone */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Field label="Email">
+                    <input
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={set("email")}
+                      style={inputStyle}
+                      onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                    />
+                  </Field>
+                  <Field label="Phone Number">
+                    <input
+                      type="tel"
+                      required
+                      value={form.phone}
+                      onChange={set("phone")}
+                      style={inputStyle}
+                      onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                    />
+                  </Field>
+                </div>
+
+                {/* Row 4 — Store Type + Locations */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Field label="Store Type">
+                    <div style={{ position: "relative" }}>
+                      <select
+                        required
+                        value={form.store_type}
+                        onChange={set("store_type")}
+                        style={{ ...inputStyle, appearance: "none", paddingRight: 44, cursor: "pointer" }}
+                        onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                        onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                      >
+                        <option value="" disabled>Select…</option>
+                        {STORE_TYPES.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                      </select>
+                      <ChevronDown />
+                    </div>
+                  </Field>
+                  <Field label="Number of Locations">
+                    <div style={{ position: "relative" }}>
+                      <select
+                        required
+                        value={form.locations}
+                        onChange={set("locations")}
+                        style={{ ...inputStyle, appearance: "none", paddingRight: 44, cursor: "pointer" }}
+                        onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                        onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                      >
+                        <option value="" disabled>Select…</option>
+                        {LOCATION_COUNTS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                      </select>
+                      <ChevronDown />
+                    </div>
+                  </Field>
+                </div>
+
+                {/* Row 5 — Monthly Units + State */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Field label="Estimated Monthly Units">
+                    <div style={{ position: "relative" }}>
+                      <select
+                        required
+                        value={form.monthly_units}
+                        onChange={set("monthly_units")}
+                        style={{ ...inputStyle, appearance: "none", paddingRight: 44, cursor: "pointer" }}
+                        onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                        onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                      >
+                        <option value="" disabled>Select…</option>
+                        {MONTHLY_UNITS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                      </select>
+                      <ChevronDown />
+                    </div>
+                  </Field>
+                  <Field label="State / Region">
+                    <div style={{ position: "relative" }}>
+                      <select
+                        required
+                        value={form.state}
+                        onChange={set("state")}
+                        style={{ ...inputStyle, appearance: "none", paddingRight: 44, cursor: "pointer" }}
+                        onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                        onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                      >
+                        <option value="" disabled>Select…</option>
+                        {STATES.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                      </select>
+                      <ChevronDown />
+                    </div>
+                  </Field>
+                </div>
+
+                {/* Row 6 — Message */}
+                <Field label="Message / Notes">
+                  <textarea
+                    value={form.message}
+                    onChange={set("message")}
+                    style={{ ...inputStyle, minHeight: 120, resize: "vertical" }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#184EA2")}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = "#dce6f0")}
+                  />
+                </Field>
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="w-full transition-colors duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{
+                    background: "#184EA2",
+                    color: "white",
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 400,
+                    fontSize: 13,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    padding: 18,
+                    borderRadius: 999,
+                    marginTop: 8,
+                    border: "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (status !== "loading") e.currentTarget.style.background = "#1a3f82";
+                  }}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#184EA2")}
+                >
+                  {status === "loading" ? "Sending…" : "Submit Inquiry"}
+                </button>
+
+                {/* Inline success/error */}
+                {status === "success" && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontStyle: "italic",
+                      fontWeight: 300,
+                      color: "#184EA2",
+                      fontSize: 16,
+                      textAlign: "center",
+                      marginTop: 4,
+                    }}
+                  >
+                    Thank you. We'll be in touch within 24 hours.
+                  </p>
+                )}
+                {status === "error" && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontWeight: 300,
+                      color: "#c33",
+                      fontSize: 13,
+                      textAlign: "center",
+                      marginTop: 4,
+                    }}
+                  >
+                    Something went wrong. Please try again.
+                  </p>
+                )}
+              </form>
+            </motion.div>
+
+            {/* RIGHT — contact + social */}
+            <motion.aside
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] as const }}
+              style={{ paddingTop: 8 }}
+            >
+              {/* Direct Contact */}
               <div>
-                <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Company / Business Name</label>
-                <input type="text" required value={form.company} onChange={set("company")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
-              </div>
-
-              {/* Email + Phone */}
-              <div className="flex flex-col sm:flex-row gap-6">
-                <div className="flex-1">
-                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Email</label>
-                  <input type="email" required value={form.email} onChange={set("email")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
-                </div>
-                <div className="flex-1">
-                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Phone Number</label>
-                  <input type="tel" required value={form.phone} onChange={set("phone")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
-                </div>
-              </div>
-
-              {/* Store Type + Locations */}
-              <div className="flex flex-col sm:flex-row gap-6">
-                <div className="flex-1">
-                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Store Type</label>
-                  <select required value={form.store_type} onChange={set("store_type")} className={selectClass} style={{ fontFamily: "var(--font-body)" }}>
-                    <option value="" disabled>Select…</option>
-                    {STORE_TYPES.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
-                  </select>
-                </div>
-                <div className="flex-1">
-                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Number of Locations</label>
-                  <select required value={form.locations} onChange={set("locations")} className={selectClass} style={{ fontFamily: "var(--font-body)" }}>
-                    <option value="" disabled>Select…</option>
-                    {LOCATION_COUNTS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
-                  </select>
+                <SectionLabel>Direct Contact</SectionLabel>
+                <div className="flex flex-col" style={{ gap: 14 }}>
+                  <ContactRow
+                    href="mailto:hello@aquavibes.com"
+                    text="hello@aquavibes.com"
+                    icon={
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2" />
+                        <path d="m2 7 10 7 10-7" />
+                      </svg>
+                    }
+                  />
+                  <ContactRow
+                    href="tel:+10000000000"
+                    text="+1 (000) 000-0000"
+                    icon={
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                      </svg>
+                    }
+                  />
                 </div>
               </div>
 
-              {/* Monthly Units + State */}
-              <div className="flex flex-col sm:flex-row gap-6">
-                <div className="flex-1">
-                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Estimated Monthly Units</label>
-                  <select required value={form.monthly_units} onChange={set("monthly_units")} className={selectClass} style={{ fontFamily: "var(--font-body)" }}>
-                    <option value="" disabled>Select…</option>
-                    {MONTHLY_UNITS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
-                  </select>
-                </div>
-                <div className="flex-1">
-                  <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>State / Region</label>
-                  <input type="text" required value={form.state} onChange={set("state")} className={fieldInput} style={{ fontFamily: "var(--font-body)" }} />
-                </div>
-              </div>
+              {/* Divider */}
+              <div style={{ borderTop: "0.5px solid #dce6f0", margin: "32px 0" }} />
 
-              {/* Message */}
+              {/* Follow Along */}
               <div>
-                <label className={fieldLabel} style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}>Message / Notes</label>
-                <textarea rows={3} value={form.message} onChange={set("message")} className={`${fieldInput} h-auto py-2 resize-none`} style={{ fontFamily: "var(--font-body)" }} />
+                <SectionLabel>Follow Along</SectionLabel>
+                <div className="flex flex-col" style={{ gap: 14 }}>
+                  <ContactRow
+                    href="https://instagram.com/drinkaquavibes"
+                    text="@drinkaquavibes"
+                    external
+                    icon={
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" />
+                        <circle cx="12" cy="12" r="5" />
+                        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                      </svg>
+                    }
+                  />
+                  <ContactRow
+                    href="https://tiktok.com/@drinkaquavibes"
+                    text="@drinkaquavibes"
+                    external
+                    icon={
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.43 0-2.59-1.16-2.59-2.59a2.59 2.59 0 0 1 2.59-2.59c.28 0 .54.04.79.12V9.66a5.65 5.65 0 0 0-.79-.06A5.66 5.66 0 0 0 4.2 15.26a5.66 5.66 0 0 0 5.66 5.66 5.66 5.66 0 0 0 5.66-5.66V9.48a7.33 7.33 0 0 0 4.28 1.37V7.76a4.28 4.28 0 0 1-3.2-1.94z" />
+                      </svg>
+                    }
+                  />
+                </div>
               </div>
 
-              {/* Error */}
-              {status === "error" && (
-                <p className="text-[12px] text-red-500 text-center" style={{ fontFamily: "var(--font-body)" }}>
-                  Something went wrong. Please try again.
+              {/* Divider */}
+              <div style={{ borderTop: "0.5px solid #dce6f0", margin: "32px 0" }} />
+
+              {/* Response Time */}
+              <div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 400,
+                    fontSize: 10,
+                    color: "#184EA2",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    marginBottom: 12,
+                  }}
+                >
+                  Response Time
+                </div>
+                <p
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 300,
+                    fontSize: 14,
+                    color: "#5a6472",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  We respond to all wholesale inquiries within 24 hours, Monday through Friday.
                 </p>
-              )}
-
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={status === "loading"}
-                className="w-full h-[52px] rounded-full bg-[#184EA2] text-white text-[14px] tracking-[0.15em] uppercase cursor-pointer transition-opacity duration-300 hover:opacity-85 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
-                style={{ fontFamily: "var(--font-body)", fontWeight: 400 }}
-              >
-                {status === "loading" ? "Sending…" : "Submit Inquiry"}
-              </button>
-            </form>
-          )}
+              </div>
+            </motion.aside>
+          </div>
         </div>
       </section>
+
+      <Footer />
     </>
   );
 }
