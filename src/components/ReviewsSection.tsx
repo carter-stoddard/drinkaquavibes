@@ -214,9 +214,9 @@ export default function ReviewsSection() {
 
         {/* Arrows */}
         <div
+          className="justify-center lg:justify-end"
           style={{
             display: "flex",
-            justifyContent: "flex-end",
             gap: 8,
             marginTop: 32,
           }}
@@ -224,9 +224,9 @@ export default function ReviewsSection() {
           <button
             onClick={() => scroll(-1)}
             aria-label="Previous"
-            className="hover:bg-[#333] transition-colors duration-200 cursor-pointer"
+            className="hover:bg-[#205fbf] transition-colors duration-200 cursor-pointer"
             style={{
-              background: "#111",
+              background: "#184EA2",
               borderRadius: 999,
               width: 44,
               height: 44,
@@ -241,9 +241,9 @@ export default function ReviewsSection() {
           <button
             onClick={() => scroll(1)}
             aria-label="Next"
-            className="hover:bg-[#333] transition-colors duration-200 cursor-pointer"
+            className="hover:bg-[#205fbf] transition-colors duration-200 cursor-pointer"
             style={{
-              background: "#111",
+              background: "#184EA2",
               borderRadius: 999,
               width: 44,
               height: 44,

@@ -19,9 +19,6 @@ function scrollToHash(href: string) {
   return true;
 }
 
-const BLUE_FILTER =
-  "brightness(0) saturate(100%) invert(24%) sepia(69%) saturate(1870%) hue-rotate(199deg) brightness(97%) contrast(87%)";
-
 export default function SiteNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -72,10 +69,10 @@ export default function SiteNav() {
               style={{ opacity: isWhite ? 1 : 0 }}
             />
             <img
-              src="/Aqua-Vibes-Logo-Web.png"
+              src="/Aqua-Vibes-Logo-Blue.png"
               alt=""
               className="absolute inset-0 h-10 lg:h-12 w-auto object-contain transition-opacity duration-700"
-              style={{ filter: BLUE_FILTER, opacity: isWhite ? 0 : 1 }}
+              style={{ opacity: isWhite ? 0 : 1 }}
             />
           </a>
 
@@ -149,10 +146,9 @@ export default function SiteNav() {
             <div className="flex items-center justify-between px-5 h-16">
               <a href="/" onClick={() => setMenuOpen(false)} className="h-10">
                 <img
-                  src="/Aqua-Vibes-Logo-Web.png"
+                  src="/Aqua-Vibes-Logo-Blue.png"
                   alt="Aqua Vibes"
                   className="h-10 w-auto object-contain"
-                  style={{ filter: BLUE_FILTER }}
                 />
               </a>
               <button
