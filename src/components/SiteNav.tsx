@@ -61,17 +61,17 @@ export default function SiteNav() {
       >
         <div className="max-w-[1400px] mx-auto flex items-center justify-between lg:grid lg:grid-cols-3 px-5 lg:px-8 h-16 lg:h-20">
           {/* LEFT — Logo */}
-          <a href="/" className="select-none relative h-10 lg:h-12 lg:justify-self-start">
+          <a href="/" className="select-none relative h-12 lg:justify-self-start">
             <img
               src="/Aqua-Vibes-Logo-Web.png"
               alt="Aqua Vibes"
-              className="h-10 lg:h-12 w-auto object-contain transition-opacity duration-700"
+              className="h-12 w-auto object-contain transition-opacity duration-700"
               style={{ opacity: isWhite ? 1 : 0 }}
             />
             <img
               src="/Aqua-Vibes-Logo-Blue.png"
               alt=""
-              className="absolute inset-0 h-10 lg:h-12 w-auto object-contain transition-opacity duration-700"
+              className="absolute inset-0 h-12 w-auto object-contain transition-opacity duration-700"
               style={{ opacity: isWhite ? 0 : 1 }}
             />
           </a>
@@ -144,11 +144,11 @@ export default function SiteNav() {
           >
             {/* Top bar — logo + close */}
             <div className="flex items-center justify-between px-5 h-16">
-              <a href="/" onClick={() => setMenuOpen(false)} className="h-10">
+              <a href="/" onClick={() => setMenuOpen(false)} className="h-12">
                 <img
                   src="/Aqua-Vibes-Logo-Blue.png"
                   alt="Aqua Vibes"
-                  className="h-10 w-auto object-contain"
+                  className="h-12 w-auto object-contain"
                 />
               </a>
               <button
