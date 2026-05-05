@@ -1,7 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import SiteNav from "./components/SiteNav";
 import Hero from "./components/Hero";
 import USPSection from "./components/USPSection";
@@ -15,8 +14,6 @@ import Footer from "./components/Footer";
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function App() {
-  useSmoothScroll();
-
   return (
     <>
       <SiteNav />

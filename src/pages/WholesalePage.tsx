@@ -1,6 +1,5 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import SiteNav from "../components/SiteNav";
 import Hero from "../components/Hero";
 import WholesaleRetailerSection from "../components/WholesaleRetailerSection";
@@ -169,7 +168,6 @@ const SectionLabel = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function WholesalePage() {
-  useSmoothScroll();
   const [form, setForm] = useState<FormData>(INITIAL);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -243,7 +241,7 @@ export default function WholesalePage() {
                 Get in Touch
               </div>
               <h2
-                className="text-[36px] lg:text-[52px]"
+                className="text-[40px] lg:text-[72px]"
                 style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 300,
@@ -257,7 +255,7 @@ export default function WholesalePage() {
                 style={{
                   fontFamily: "var(--font-body)",
                   fontWeight: 300,
-                  fontSize: 14,
+                  fontSize: 16,
                   color: "#8a9aaa",
                   marginTop: 12,
                   marginBottom: 40,
@@ -562,7 +560,7 @@ export default function WholesalePage() {
                   style={{
                     fontFamily: "var(--font-body)",
                     fontWeight: 300,
-                    fontSize: 14,
+                    fontSize: 16,
                     color: "#5a6472",
                     lineHeight: 1.7,
                   }}

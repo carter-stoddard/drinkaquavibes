@@ -76,11 +76,11 @@ export default function BentoSection() {
               marginBottom: 20,
             }}
           >
-            The Brand
+            BEHIND THE SCENES
           </motion.div>
           <motion.h2
             {...headerReveal(0.12)}
-            className="text-[36px] lg:text-[60px] leading-[1.1]"
+            className="text-[40px] lg:text-[72px] leading-[1.1]"
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,

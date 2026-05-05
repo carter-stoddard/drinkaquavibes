@@ -309,7 +309,7 @@ export default function Footer() {
               margin: 0,
             }}
           >
-            © 2025 Aqua Vibes. All rights reserved. ·{" "}
+            © 2026 Aqua Vibes. All rights reserved. ·{" "}
             <a
               href="https://carterstoddard.com"
               target="_blank"
@@ -322,7 +322,7 @@ export default function Footer() {
               onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.9)")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
             >
-              Site by Carter Stoddard
+              Site by Carter Stoddard LLC
             </a>
           </p>
           <p

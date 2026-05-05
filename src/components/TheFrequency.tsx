@@ -119,9 +119,9 @@ function MobileBlock({ data, isLast, onEnter }: MobileBlockProps) {
           marginRight: 16,
           position: "relative",
           zIndex: 2,
-          background: "rgba(24, 78, 162, 0.55)",
-          backdropFilter: "blur(24px) saturate(140%)",
-          WebkitBackdropFilter: "blur(24px) saturate(140%)",
+          background: "rgba(24, 78, 162, 0.82)",
+          backdropFilter: "blur(20px) saturate(110%)",
+          WebkitBackdropFilter: "blur(20px) saturate(110%)",
           border: "1px solid rgba(255, 255, 255, 0.10)",
           boxShadow: "0 12px 40px rgba(0, 0, 0, 0.25)",
           borderRadius: 16,
@@ -159,7 +159,7 @@ function MobileBlock({ data, isLast, onEnter }: MobileBlockProps) {
           style={{
             fontFamily: "var(--font-body)",
             fontWeight: 300,
-            fontSize: 14,
+            fontSize: 16,
             color: "rgba(255, 255, 255, 0.75)",
             lineHeight: 1.7,
             marginTop: 14,
@@ -203,7 +203,7 @@ function DesktopText({ data }: { data: BlockData }) {
         style={{
           fontFamily: "var(--font-body)",
           fontWeight: 300,
-          fontSize: 15,
+          fontSize: 17,
           color: "#5a6472",
           lineHeight: 1.8,
           marginTop: 16,
@@ -263,14 +263,14 @@ export default function TheFrequency() {
             marginBottom: 20,
           }}
         >
-          888 Hz
+          THE FREQUENCY
         </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: 0.8, delay: 0.12, ease }}
-          className="text-[36px] lg:text-[60px] leading-[1.1]"
+          className="text-[40px] lg:text-[72px] leading-[1.1]"
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 300,

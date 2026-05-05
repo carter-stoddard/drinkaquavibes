@@ -73,7 +73,7 @@ function Body({ children }: { children: React.ReactNode }) {
       style={{
         fontFamily: "var(--font-body)",
         fontWeight: 300,
-        fontSize: 15,
+        fontSize: 17,
         color: "#5a6472",
         lineHeight: 1.8,
         marginTop: 16,
@@ -178,14 +178,14 @@ export default function ProductSection() {
             marginBottom: 20,
           }}
         >
-          Inside the Bottle
+          OUR WATER
         </motion.div>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: 0.8, delay: 0.12, ease }}
-          className="text-[36px] lg:text-[60px] leading-[1.1]"
+          className="text-[40px] lg:text-[72px] leading-[1.1]"
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 300,

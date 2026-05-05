@@ -75,14 +75,14 @@ export default function SustainabilitySection() {
               marginBottom: 20,
             }}
           >
-            Conscious by Design
+            SUSTAINABILITY
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-15%" }}
             transition={{ duration: 0.8, delay: 0.12, ease }}
-            className="text-[36px] lg:text-[60px] leading-[1.1]"
+            className="text-[40px] lg:text-[72px] leading-[1.1]"
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
@@ -138,28 +138,11 @@ export default function SustainabilitySection() {
               zIndex: 10,
             }}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.7, ease }}
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 400,
-                fontSize: 11,
-                color: "rgba(255,255,255,0.7)",
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                marginBottom: 12,
-              }}
-            >
-              SUSTAINABILITY
-            </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.85, delay: 0.12, ease }}
+              transition={{ duration: 0.85, ease }}
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 300,
@@ -178,7 +161,7 @@ export default function SustainabilitySection() {
               style={{
                 fontFamily: "var(--font-body)",
                 fontWeight: 300,
-                fontSize: 15,
+                fontSize: 17,
                 color: "rgba(255,255,255,0.7)",
                 marginTop: 12,
               }}
@@ -293,28 +276,11 @@ export default function SustainabilitySection() {
           </div>
 
           <div style={{ padding: "32px 0" }}>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.7, ease }}
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 400,
-                fontSize: 11,
-                color: "#184EA2",
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                marginBottom: 12,
-              }}
-            >
-              SUSTAINABILITY
-            </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.85, delay: 0.12, ease }}
+              transition={{ duration: 0.85, ease }}
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 300,
@@ -333,7 +299,7 @@ export default function SustainabilitySection() {
               style={{
                 fontFamily: "var(--font-body)",
                 fontWeight: 300,
-                fontSize: 15,
+                fontSize: 17,
                 color: "#5a6472",
                 marginTop: 12,
               }}

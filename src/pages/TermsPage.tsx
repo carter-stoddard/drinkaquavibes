@@ -1,4 +1,3 @@
-import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import SiteNav from "../components/SiteNav";
 import Footer from "../components/Footer";
 
@@ -19,7 +18,7 @@ const sectionTitle: React.CSSProperties = {
 const body: React.CSSProperties = {
   fontFamily: "var(--font-body)",
   fontWeight: 300,
-  fontSize: 15,
+  fontSize: 17,
   color: "#3a4452",
   lineHeight: 1.85,
   marginBottom: 16,
@@ -31,7 +30,6 @@ const list: React.CSSProperties = {
 };
 
 export default function TermsPage() {
-  useSmoothScroll();
 
   return (
     <>

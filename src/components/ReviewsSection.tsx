@@ -86,14 +86,14 @@ export default function ReviewsSection() {
               marginBottom: 16,
             }}
           >
-            WHAT THEY'RE SAYING
+            REVIEWS
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.8, delay: 0.12, ease }}
-            className="text-[36px] lg:text-[64px]"
+            className="text-[40px] lg:text-[72px]"
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
@@ -214,9 +214,9 @@ export default function ReviewsSection() {
 
         {/* Arrows */}
         <div
-          className="justify-center lg:justify-end"
           style={{
             display: "flex",
+            justifyContent: "flex-end",
             gap: 8,
             marginTop: 32,
           }}

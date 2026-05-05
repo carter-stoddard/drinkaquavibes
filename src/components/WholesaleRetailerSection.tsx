@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { NavArrow, ProgressBar } from "./CarouselNav";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -162,7 +163,7 @@ function Panel({ data }: { data: TabData }) {
           style={{
             fontFamily: "var(--font-body)",
             fontWeight: 300,
-            fontSize: 14,
+            fontSize: 16,
             color: "#5a6472",
             lineHeight: 1.8,
           }}
@@ -248,9 +249,20 @@ export default function WholesaleRetailerSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
   const step = (dir: -1 | 1) => {
-    const next = (activeIndex + dir + TABS.length) % TABS.length;
+    const next = activeIndex + dir;
+    if (next < 0 || next >= TABS.length) return;
     setActive(TABS[next].key);
   };
+
+  const atStart = activeIndex === 0;
+  const atEnd = activeIndex === TABS.length - 1;
+  const progress = activeIndex / (TABS.length - 1);
+
+  const tabsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = tabsRef.current?.querySelector<HTMLElement>(`[data-tab="${active}"]`);
+    el?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }, [active]);
 
   // Auto-advance every 2.8s — pauses on hover (desktop) or tap (mobile),
   // and only ticks while the section is in the viewport.
@@ -301,7 +313,7 @@ export default function WholesaleRetailerSection() {
               Who We Supply
             </div>
             <h2
-              className="text-[36px] lg:text-[64px]"
+              className="text-[40px] lg:text-[72px]"
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 300,
@@ -323,7 +335,7 @@ export default function WholesaleRetailerSection() {
               style={{
                 fontFamily: "var(--font-body)",
                 fontWeight: 300,
-                fontSize: 15,
+                fontSize: 17,
                 color: "#5a6472",
                 lineHeight: 1.8,
                 marginBottom: 28,
@@ -357,16 +369,16 @@ export default function WholesaleRetailerSection() {
           </motion.div>
         </div>
 
-        {/* Tabs — desktop only; mobile uses the prev/next arrows below */}
+        {/* Tabs — visible on mobile + desktop, sync with active topic */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.7, delay: 0.3, ease }}
-          className="hidden lg:block"
-          style={{ marginTop: 56 }}
+          style={{ marginTop: 40 }}
         >
           <div
+            ref={tabsRef}
             className="lg:grid lg:grid-cols-5 flex overflow-x-auto [&::-webkit-scrollbar]:hidden"
             style={{
               borderTop: "0.5px solid #e0e0e0",
@@ -378,19 +390,20 @@ export default function WholesaleRetailerSection() {
               return (
                 <button
                   key={tab.key}
+                  data-tab={tab.key}
                   onClick={() => setActive(tab.key)}
                   className="relative cursor-pointer transition-colors duration-300 text-center flex-shrink-0 lg:flex-shrink"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontWeight: isActive ? 400 : 300,
-                    fontSize: 14,
+                    fontSize: 13,
                     color: isActive ? "#0f1923" : "#8a9aaa",
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
-                    paddingTop: 20,
-                    paddingBottom: 16,
-                    paddingLeft: 24,
-                    paddingRight: 24,
+                    paddingTop: 18,
+                    paddingBottom: 14,
+                    paddingLeft: 20,
+                    paddingRight: 20,
                     background: "transparent",
                     border: "none",
                     whiteSpace: "nowrap",
@@ -418,70 +431,20 @@ export default function WholesaleRetailerSection() {
           </AnimatePresence>
         </div>
 
-        {/* Mobile-only prev/next arrows */}
-        <div
-          className="flex lg:hidden"
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 16,
-            marginTop: 24,
-          }}
-        >
-          <button
-            onClick={() => step(-1)}
-            aria-label="Previous category"
-            className="cursor-pointer transition-colors duration-200 hover:bg-[#205fbf]"
+        {/* Progress bar + prev/next arrows — mobile + desktop, right-aligned */}
+        <div style={{ marginTop: 24 }}>
+          <ProgressBar progress={progress} />
+          <div
             style={{
-              background: "#184EA2",
-              borderRadius: 999,
-              width: 44,
-              height: 44,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "none",
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: 8,
+              marginTop: 16,
             }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12" />
-              <polyline points="12 19 5 12 12 5" />
-            </svg>
-          </button>
-          <span
-            style={{
-              fontFamily: "var(--font-body)",
-              fontWeight: 400,
-              fontSize: 12,
-              color: "#0f1923",
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              minWidth: 140,
-              textAlign: "center",
-            }}
-          >
-            {activeData.label}
-          </span>
-          <button
-            onClick={() => step(1)}
-            aria-label="Next category"
-            className="cursor-pointer transition-colors duration-200 hover:bg-[#205fbf]"
-            style={{
-              background: "#184EA2",
-              borderRadius: 999,
-              width: 44,
-              height: 44,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "none",
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </button>
+            <NavArrow dir={-1} disabled={atStart} onClick={() => step(-1)} label="Previous category" />
+            <NavArrow dir={1} disabled={atEnd} onClick={() => step(1)} label="Next category" />
+          </div>
         </div>
       </div>
     </section>
