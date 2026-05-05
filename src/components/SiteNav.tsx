@@ -44,9 +44,6 @@ export default function SiteNav() {
 
   const isWhite = menuOpen;
   const textColor = isWhite ? "#fff" : "#184EA2";
-  const ctaBg = isWhite ? "#fff" : "#184EA2";
-  const ctaColor = isWhite ? "#184EA2" : "#fff";
-  const freqClass = isWhite ? "" : " freq-icon--dark";
 
   return (
     <>
