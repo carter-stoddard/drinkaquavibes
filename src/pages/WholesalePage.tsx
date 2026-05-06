@@ -214,7 +214,7 @@ export default function WholesalePage() {
       {/* ── Hero (wholesale variant) ── */}
       <Hero
         image="/AQUA-HERO-WHOLESALE.png"
-        mobileImageClass="object-left-bottom origin-bottom-left -translate-x-[55%]"
+        mobileImageClass="object-contain object-left-bottom origin-bottom-left scale-[1.4] -translate-x-[55%]"
         headline={<>Premium Water. <em>Zero Complexity.</em></>}
         ctaLabel="Apply for Wholesale"
         ctaHref="#wholesale-form"

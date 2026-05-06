@@ -5,6 +5,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 interface HeroProps {
   image?: string;
   mobileImageClass?: string;
+  aspectClass?: string;
   headline?: React.ReactNode;
   ctaLabel?: string;
   ctaHref?: string;
@@ -13,7 +14,8 @@ interface HeroProps {
 
 export default function Hero({
   image = "/AQUA-HERO-FINAL.png",
-  mobileImageClass = "object-bottom origin-bottom -translate-x-[35%]",
+  mobileImageClass = "object-cover object-center",
+  aspectClass = "aspect-[4/5] lg:aspect-[2/1]",
   headline = (
     <>
       Hydrate with <em>Intention</em>
@@ -25,18 +27,36 @@ export default function Hero({
 }: HeroProps = {}) {
   return (
     <section
-      className="relative overflow-hidden aspect-[4/5] lg:aspect-[2/1] mx-3 mt-[88px] mb-3 bg-white"
+      className={`relative overflow-hidden ${aspectClass} mx-3 mt-[88px] mb-3 bg-white`}
       style={{ borderRadius: "12px" }}
     >
       {/* Hero image — full background, both mobile and desktop */}
       <motion.img
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: 0.85 }}
         transition={{ duration: 1.2, ease }}
         src={image}
         alt=""
         aria-hidden
-        className={`absolute inset-0 w-full h-full object-contain ${mobileImageClass} scale-[1.4] lg:translate-x-0 lg:scale-100 lg:origin-center lg:object-left`}
+        className={`absolute inset-0 w-full h-full ${mobileImageClass} lg:object-contain lg:object-center lg:translate-x-0 lg:scale-100 lg:origin-center`}
+      />
+
+      {/* Legibility overlay — softens area where text sits */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-[55%] lg:hidden pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.45) 55%, rgba(255,255,255,0) 100%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="hidden lg:block absolute inset-y-0 left-0 w-[60%] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to right, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)",
+        }}
       />
 
       {/* Copy */}
