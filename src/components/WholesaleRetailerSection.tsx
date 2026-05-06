@@ -23,7 +23,7 @@ const TABS: TabData[] = [
     key: "yoga",
     label: "Yoga & Wellness",
     bg: "#e8edf5",
-    image: "/AQUA-PILATESWELLNESS.png",
+    image: "/AQUA-WELLNESS.png",
     quote: "Where wellness begins.",
     headline: { lead: "Your clients already ", emph: "believe in it." },
     body: "Health-conscious, intentional, values-driven. Aqua Vibes was made for the same customer walking through your door.",
@@ -38,6 +38,7 @@ const TABS: TabData[] = [
     key: "gym",
     label: "Gym & Fitness",
     bg: "#e8f0e8",
+    image: "/AQUA-GYM.png",
     quote: "Fuel the training. Stock the shelf.",
     headline: { lead: "Stock what ", emph: "performs." },
     body: "Athletes and active consumers are your core demographic. Give them a water that matches their standard.",
@@ -67,6 +68,7 @@ const TABS: TabData[] = [
     key: "spas",
     label: "Spas & Retreats",
     bg: "#f0e8f4",
+    image: "/AQUA-SPA.png",
     quote: "The ritual of restoration.",
     headline: { lead: "The ritual starts ", emph: "with water." },
     body: "Before the treatment, after the treatment — hydration is part of the experience. Make it intentional.",
@@ -81,6 +83,7 @@ const TABS: TabData[] = [
     key: "cafes",
     label: "Specialty Cafés",
     bg: "#f5f0e8",
+    image: "/AQUA-CAFE.png",
     quote: "Intentional from the first sip.",
     headline: { lead: "Your customers ", emph: "drink intentionally." },
     body: "They read labels. They choose quality. Aqua Vibes is the water for the customer who already knows the difference.",
@@ -98,10 +101,10 @@ function Panel({ data }: { data: TabData }) {
   return (
     <motion.div
       key={data.key}
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -12 }}
-      transition={{ duration: 0.7, ease }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.32, ease }}
       className="grid grid-cols-1 lg:grid-cols-[60%_40%]"
       style={{ minHeight: 480, borderRadius: 16, overflow: "hidden" }}
     >

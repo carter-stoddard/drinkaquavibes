@@ -13,7 +13,7 @@ interface HeroProps {
 
 export default function Hero({
   image = "/AQUA-HERO-FINAL.png",
-  mobileImageClass = "object-bottom origin-bottom",
+  mobileImageClass = "object-bottom origin-bottom -translate-x-[35%]",
   headline = (
     <>
       Hydrate with <em>Intention</em>
@@ -36,7 +36,7 @@ export default function Hero({
         src={image}
         alt=""
         aria-hidden
-        className={`absolute inset-0 w-full h-full object-contain ${mobileImageClass} scale-[1.4] -translate-x-[35%] lg:translate-x-0 lg:scale-100 lg:origin-center lg:object-left`}
+        className={`absolute inset-0 w-full h-full object-contain ${mobileImageClass} scale-[1.4] lg:translate-x-0 lg:scale-100 lg:origin-center lg:object-left`}
       />
 
       {/* Copy */}
@@ -48,7 +48,7 @@ export default function Hero({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease }}
-            className="text-[38px] md:text-[56px] lg:text-[72px] xl:text-[88px] leading-[1.05] lg:leading-[1.02] tracking-[-0.005em] text-[#0d1320] mt-[10px] lg:mt-0 mb-8 lg:mb-12"
+            className="text-[48px] md:text-[56px] lg:text-[72px] xl:text-[88px] leading-[1.05] lg:leading-[1.02] tracking-[-0.005em] text-[#0d1320] mt-[10px] lg:mt-0 mb-8 lg:mb-12"
             style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
           >
             {headline}

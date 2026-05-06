@@ -1,5 +1,5 @@
-import { useState, FormEvent } from "react";
-import { motion } from "framer-motion";
+import { useState, FormEvent, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import SiteNav from "../components/SiteNav";
 import Hero from "../components/Hero";
 import WholesaleRetailerSection from "../components/WholesaleRetailerSection";
@@ -170,6 +170,20 @@ const SectionLabel = ({ children }: { children: React.ReactNode }) => (
 export default function WholesalePage() {
   const [form, setForm] = useState<FormData>(INITIAL);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!showSuccess) return;
+    document.documentElement.classList.add("lenis-stopped");
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowSuccess(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.documentElement.classList.remove("lenis-stopped");
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [showSuccess]);
 
   const set = (key: keyof FormData) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -186,6 +200,7 @@ export default function WholesalePage() {
       });
       if (!res.ok) throw new Error("Email failed");
       setStatus("success");
+      setShowSuccess(true);
       setForm(INITIAL);
     } catch {
       setStatus("error");
@@ -199,7 +214,7 @@ export default function WholesalePage() {
       {/* ── Hero (wholesale variant) ── */}
       <Hero
         image="/AQUA-HERO-WHOLESALE.png"
-        mobileImageClass="object-left-bottom origin-bottom-left"
+        mobileImageClass="object-left-bottom origin-bottom-left -translate-x-[55%]"
         headline={<>Premium Water. <em>Zero Complexity.</em></>}
         ctaLabel="Apply for Wholesale"
         ctaHref="#wholesale-form"
@@ -439,22 +454,7 @@ export default function WholesalePage() {
                   {status === "loading" ? "Sending…" : "Submit Inquiry"}
                 </button>
 
-                {/* Inline success/error */}
-                {status === "success" && (
-                  <p
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontStyle: "italic",
-                      fontWeight: 300,
-                      color: "#184EA2",
-                      fontSize: 16,
-                      textAlign: "center",
-                      marginTop: 4,
-                    }}
-                  >
-                    Thank you. We'll be in touch within 24 hours.
-                  </p>
-                )}
+                {/* Inline error (success uses popup) */}
                 {status === "error" && (
                   <p
                     style={{
@@ -574,6 +574,155 @@ export default function WholesalePage() {
       </section>
 
       <Footer />
+
+      {/* Success modal */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setShowSuccess(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="wholesale-success-title"
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 100,
+              background: "rgba(15, 25, 35, 0.55)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 24,
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 16, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.98 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: "#ffffff",
+                borderRadius: 20,
+                maxWidth: 460,
+                width: "100%",
+                padding: 40,
+                textAlign: "center",
+                boxShadow: "0 24px 80px rgba(0,0,0,0.25)",
+                position: "relative",
+              }}
+            >
+              <button
+                onClick={() => setShowSuccess(false)}
+                aria-label="Close"
+                style={{
+                  position: "absolute",
+                  top: 16,
+                  right: 16,
+                  width: 36,
+                  height: 36,
+                  borderRadius: 999,
+                  border: "none",
+                  background: "transparent",
+                  color: "#8a9aaa",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 20,
+                  lineHeight: 1,
+                }}
+              >
+                ×
+              </button>
+
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 999,
+                  background: "rgba(24,78,162,0.08)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 20,
+                }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#184EA2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+
+              <div
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 400,
+                  fontSize: 11,
+                  color: "#184EA2",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.18em",
+                  marginBottom: 12,
+                }}
+              >
+                Inquiry Received
+              </div>
+
+              <h3
+                id="wholesale-success-title"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 300,
+                  fontSize: 32,
+                  color: "#0f1923",
+                  lineHeight: 1.15,
+                  margin: 0,
+                  marginBottom: 12,
+                }}
+              >
+                Thank you. <em>We'll be in touch.</em>
+              </h3>
+
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 300,
+                  fontSize: 16,
+                  color: "#5a6472",
+                  lineHeight: 1.6,
+                  margin: 0,
+                  marginBottom: 28,
+                }}
+              >
+                A member of our wholesale team will reach out within 24 hours, Monday through Friday.
+              </p>
+
+              <button
+                onClick={() => setShowSuccess(false)}
+                className="cursor-pointer transition-opacity duration-200 hover:opacity-85"
+                style={{
+                  background: "#184EA2",
+                  color: "white",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 400,
+                  fontSize: 12,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.18em",
+                  padding: "14px 36px",
+                  borderRadius: 999,
+                  border: "none",
+                }}
+              >
+                Close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
