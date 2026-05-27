@@ -16,7 +16,7 @@ const IMAGE_BG: Record<BlockKey, string> = {
 };
 
 const IMAGE_SRC: Partial<Record<BlockKey, string>> = {
-  what: "/AquaVibes-Splash.png",
+  what: "/aqua-vibes-sound-transforms-water.webp",
   cymatics: "/AQUA-WHATYOUCANTSEE.png",
   why: "/aqua-vibes-intentional-hydration.webp",
 };
