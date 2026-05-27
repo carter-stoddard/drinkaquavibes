@@ -12,7 +12,7 @@ const BLOCK_BG: Record<BlockKey, string> = {
 };
 
 const BLOCK_IMG: Partial<Record<BlockKey, string>> = {
-  frequency: "/AQUA-WATERTUNEDFREQUENCY.png",
+  frequency: "/aqua-vibes-water-tuned-to-frequency.webp",
   taste: "/AQUA-PURIFIEDTOPERFECTION.png",
   format: "/Aqua-Vibes-4.png",
 };

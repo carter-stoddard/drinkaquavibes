@@ -18,11 +18,11 @@ interface CellData {
 }
 
 const CELLS: CellData[] = [
-  { src: "/AquaVibes-Manufacturing-Plant.png", bg: "#dce6f4", gridColumn: "1", gridRow: "1 / 3", cellClass: "bento-cell-1" },
-  { src: "/AquaVibes-Plane.png", bg: "#e8f0f8", gridColumn: "2", gridRow: "1" },
-  { src: "/AquaVibes-Ice.png", bg: "#e0eaf4", gridColumn: "3", gridRow: "1" },
-  { src: "/aqua-vibes-airport.png", bg: "#d8e4f0", gridColumn: "2", gridRow: "2" },
-  { src: "/aqua-vibes-cooler.png", bg: "#e8eef8", gridColumn: "3", gridRow: "2" },
+  { src: "/AquaVibes-Manufacturing-Plant.webp", bg: "#dce6f4", gridColumn: "1", gridRow: "1 / 3", cellClass: "bento-cell-1" },
+  { src: "/AquaVibes-Plane.webp", bg: "#e8f0f8", gridColumn: "2", gridRow: "1" },
+  { src: "/AquaVibes-Ice.webp", bg: "#e0eaf4", gridColumn: "3", gridRow: "1" },
+  { src: "/aqua-vibes-airport.webp", bg: "#d8e4f0", gridColumn: "2", gridRow: "2" },
+  { src: "/aqua-vibes-cooler.webp", bg: "#e8eef8", gridColumn: "3", gridRow: "2" },
 ];
 
 export default function BentoSection() {

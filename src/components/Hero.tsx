@@ -13,7 +13,7 @@ interface HeroProps {
 }
 
 export default function Hero({
-  image = "/AQUA-HERO-FINAL.png",
+  image = "/aqua-vibes-alkaline-water-hero.webp",
   mobileImageClass = "object-cover object-center",
   aspectClass = "aspect-[4/5] lg:aspect-[2/1]",
   headline = (

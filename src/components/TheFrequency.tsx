@@ -18,7 +18,7 @@ const IMAGE_BG: Record<BlockKey, string> = {
 const IMAGE_SRC: Partial<Record<BlockKey, string>> = {
   what: "/AquaVibes-Splash.png",
   cymatics: "/AQUA-WHATYOUCANTSEE.png",
-  why: "/AQUA-INTENTIONALHYDRATION.png",
+  why: "/aqua-vibes-intentional-hydration.webp",
 };
 
 interface BlockData {

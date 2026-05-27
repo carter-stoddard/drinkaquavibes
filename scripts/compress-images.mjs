@@ -3,9 +3,8 @@ import { join, extname } from "node:path";
 import sharp from "sharp";
 
 const DIR = "public";
-const MAX_WIDTH = 2000;
-const PNG_QUALITY = 78;
-const JPEG_QUALITY = 82;
+const MAX_WIDTH = 2400;
+const JPEG_QUALITY = 92;
 
 const files = (await readdir(DIR)).filter((f) =>
   /\.(png|jpe?g)$/i.test(f)
@@ -32,8 +31,10 @@ for (const file of files) {
 
   let out;
   if (ext === ".png") {
+    // Lossless PNG: full 24-bit color preserved, just stronger deflate.
+    // No palette quantization — that's what caused the banding/pixelation.
     out = await pipeline
-      .png({ palette: true, quality: PNG_QUALITY, compressionLevel: 9, effort: 10 })
+      .png({ palette: false, compressionLevel: 9, effort: 10, adaptiveFiltering: true })
       .toBuffer();
   } else {
     out = await pipeline
