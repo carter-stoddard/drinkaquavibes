@@ -1,7 +1,7 @@
 import SiteNav from "../components/SiteNav";
 import Footer from "../components/Footer";
 
-const EFFECTIVE_DATE = "[Effective Date]";
+const EFFECTIVE_DATE = "June 14, 2026";
 const CONTACT_EMAIL = "privacy@drinkaquavibes.com";
 
 const sectionTitle: React.CSSProperties = {

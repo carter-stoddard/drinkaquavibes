@@ -10,6 +10,7 @@ import CookiesPage from "./pages/CookiesPage";
 import CCPAPage from "./pages/CCPAPage";
 import FDADisclaimerPage from "./pages/FDADisclaimerPage";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
+import CookieBanner from "./components/CookieBanner";
 import "./index.css";
 
 function SmoothScrollLayout({ children }: { children: React.ReactNode }) {
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/ccpa" element={<CCPAPage />} />
           <Route path="/fda-disclaimer" element={<FDADisclaimerPage />} />
         </Routes>
+        <CookieBanner />
       </SmoothScrollLayout>
     </BrowserRouter>
   </StrictMode>

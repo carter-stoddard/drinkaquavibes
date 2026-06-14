@@ -383,6 +383,34 @@ export default function TheFrequency() {
           </div>
         </div>
       </div>
+
+      {/* Disclaimer — small, italic, brand-tone */}
+      <div className="max-w-[1400px] mx-auto px-8 pb-[60px] lg:pb-12">
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            fontWeight: 300,
+            fontSize: 12,
+            color: "#8a9aaa",
+            fontStyle: "italic",
+            lineHeight: 1.6,
+            textAlign: "center",
+            maxWidth: 720,
+            margin: "0 auto",
+          }}
+        >
+          The association of 888 Hz with abundance, alignment, and resonance
+          reflects long-standing spiritual and wellness traditions, not a
+          scientifically established fact. We share this language because it
+          is part of our brand story — not as a medical or scientific claim.{" "}
+          <a
+            href="/fda-disclaimer"
+            style={{ color: "#184EA2", textDecoration: "none" }}
+          >
+            Read full disclaimer.
+          </a>
+        </p>
+      </div>
     </section>
   );
 }

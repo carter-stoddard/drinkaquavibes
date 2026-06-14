@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { openCookieBanner } from "./CookieBanner";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -44,14 +45,10 @@ export default function Footer() {
   return (
     <footer style={{ background: "#184EA2", width: "100%" }} className="py-[60px] lg:py-[80px] lg:pb-[40px]">
       <style>{`
-        .footer-input::placeholder { color: rgba(255,255,255,0.4); }
-        .footer-input:focus { border-color: rgba(255,255,255,0.6) !important; outline: none; }
         .footer-link { transition: opacity 0.2s ease; opacity: 0.75; }
         .footer-link:hover { opacity: 1; }
         .footer-social { transition: opacity 0.2s ease; opacity: 0.7; color: white; display: inline-flex; }
         .footer-social:hover { opacity: 1; }
-        .footer-submit { transition: background 0.2s ease; }
-        .footer-submit:hover { background: rgba(255,255,255,0.9); }
         .footer-legal-link { color: rgba(255,255,255,0.45); transition: color 0.2s ease; text-decoration: none; }
         .footer-legal-link:hover { color: rgba(255,255,255,0.8); }
         .footer-legal {
@@ -66,7 +63,7 @@ export default function Footer() {
 
         .footer-top {
           display: grid;
-          grid-template-columns: 30% 20% 50%;
+          grid-template-columns: 1fr 1fr;
           gap: 80px;
           padding-bottom: 64px;
           border-bottom: 0.5px solid rgba(255,255,255,0.15);
@@ -82,11 +79,6 @@ export default function Footer() {
           max-width: 600px;
           text-align: right;
         }
-        .footer-email-row {
-          display: flex;
-          gap: 10px;
-        }
-
         @media (max-width: 768px) {
           .footer-top {
             grid-template-columns: 1fr;
@@ -104,13 +96,6 @@ export default function Footer() {
           }
           .footer-nav {
             align-items: center !important;
-          }
-          .footer-email-row {
-            flex-direction: column;
-            width: 100%;
-          }
-          .footer-submit {
-            width: 100%;
           }
           .footer-bottom {
             flex-direction: column;
@@ -209,75 +194,6 @@ export default function Footer() {
             </nav>
           </motion.div>
 
-          {/* Column 3 — Email Capture */}
-          <motion.div {...fadeUp(0.2)}>
-            <div
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 400,
-                fontSize: 10,
-                color: "rgba(255,255,255,0.5)",
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                marginBottom: 8,
-              }}
-            >
-              STAY IN THE LOOP
-            </div>
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: 300,
-                fontSize: 13,
-                color: "rgba(255,255,255,0.6)",
-                marginBottom: 20,
-              }}
-            >
-              Join the Aqua Vibes community. No spam, ever.
-            </p>
-            <form
-              className="footer-email-row"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="footer-input"
-                style={{
-                  background: "rgba(255,255,255,0.1)",
-                  border: "0.5px solid rgba(255,255,255,0.25)",
-                  borderRadius: 999,
-                  padding: "14px 24px",
-                  fontFamily: "var(--font-body)",
-                  fontWeight: 300,
-                  fontSize: 14,
-                  color: "white",
-                  width: "100%",
-                  outline: "none",
-                }}
-              />
-              <button
-                type="submit"
-                className="footer-submit"
-                style={{
-                  background: "#ffffff",
-                  color: "#184EA2",
-                  fontFamily: "var(--font-body)",
-                  fontWeight: 400,
-                  fontSize: 12,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  padding: "14px 28px",
-                  borderRadius: 999,
-                  whiteSpace: "nowrap",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Join
-              </button>
-            </form>
-          </motion.div>
         </div>
 
         {/* LEGAL — placeholder routes */}
@@ -296,6 +212,24 @@ export default function Footer() {
               {link.label}
             </a>
           ))}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              openCookieBanner();
+            }}
+            className="footer-legal-link"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 300,
+              fontSize: 11,
+              background: "transparent",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+            }}
+          >
+            Manage Cookies
+          </button>
         </div>
 
         {/* BOTTOM — copyright + disclaimer */}
@@ -336,7 +270,7 @@ export default function Footer() {
               margin: 0,
             }}
           >
-            The information provided regarding sound frequency is for informational purposes only and does not constitute medical advice. Individual experiences may vary. Consult a qualified healthcare professional before making health-related decisions.
+            References on this site to 888 Hz, sound frequency, and cymatics reflect spiritual and wellness traditions rather than scientifically established facts. All information is provided for lifestyle purposes only and does not constitute medical advice. Individual experiences may vary. Consult a qualified healthcare professional before making health-related decisions.
           </p>
         </div>
       </div>

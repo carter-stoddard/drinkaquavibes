@@ -1,7 +1,7 @@
 import SiteNav from "../components/SiteNav";
 import Footer from "../components/Footer";
 
-const EFFECTIVE_DATE = "[Effective Date]";
+const EFFECTIVE_DATE = "June 14, 2026";
 const CONTACT_EMAIL = "hello@drinkaquavibes.com";
 
 const sectionTitle: React.CSSProperties = {
@@ -77,6 +77,20 @@ export default function FDADisclaimerPage() {
             cellular hydration, and 888 Hz frequency infusion describe the
             character and design of our product and are made for
             informational and lifestyle purposes only.
+          </p>
+
+          <h2 style={sectionTitle}>888 Hz and Frequency-Related Claims</h2>
+          <p style={body}>
+            References on this website to 888 Hz, sound frequency, cymatics,
+            and the spiritual or energetic significance of these concepts
+            reflect long-standing beliefs within wellness, mindfulness, and
+            metaphysical traditions. They are not presented as scientifically
+            established facts. Any associations between 888 Hz and abundance,
+            alignment, balance, resonance, or other spiritual or energetic
+            outcomes reflect cultural and wellness traditions rather than
+            peer-reviewed scientific findings. We share this language because
+            it is part of our brand story and because it resonates with our
+            community — not as a medical, therapeutic, or scientific claim.
           </p>
 
           <h2 style={sectionTitle}>Statements Have Not Been Evaluated by the FDA</h2>
