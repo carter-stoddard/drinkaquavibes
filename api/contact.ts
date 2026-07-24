@@ -1,3 +1,4 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Resend } from "resend";
 
 const FIELD_LABELS: Record<string, string> = {
@@ -21,39 +22,29 @@ const escapeHtml = (s: string) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-export default async function handler(req: Request): Promise<Response> {
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
   if (req.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405,
-      headers: { "Content-Type": "application/json" },
-    });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: "Server misconfigured" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return res.status(500).json({ error: "Server misconfigured" });
   }
 
-  let body: Record<string, string>;
-  try {
-    body = await req.json();
-  } catch {
-    return new Response(JSON.stringify({ error: "Invalid JSON" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+  const body: Record<string, string> | null =
+    req.body && typeof req.body === "object" ? req.body : null;
+  if (!body) {
+    return res.status(400).json({ error: "Invalid JSON" });
   }
 
   const required = ["first_name", "last_name", "company", "email", "phone"];
   for (const key of required) {
     if (!body[key] || typeof body[key] !== "string" || !body[key].trim()) {
-      return new Response(
-        JSON.stringify({ error: `Missing field: ${key}` }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+      return res.status(400).json({ error: `Missing field: ${key}` });
     }
   }
 
@@ -71,7 +62,7 @@ export default async function handler(req: Request): Promise<Response> {
   const html = `
     <div style="background:#fff;padding:32px;font-family:sans-serif;color:#000;">
       <h1 style="font-family:Georgia,serif;font-weight:300;font-size:28px;color:#184EA2;margin:0 0 8px 0;">New Wholesale Inquiry</h1>
-      <p style="font-size:13px;color:#666;margin:0 0 24px 0;">Submitted via aquavibes.com</p>
+      <p style="font-size:13px;color:#666;margin:0 0 24px 0;">Submitted via drinkaquavibes.com</p>
       <table style="border-collapse:collapse;width:100%;max-width:640px;">${rows}</table>
     </div>
   `;
@@ -83,7 +74,7 @@ export default async function handler(req: Request): Promise<Response> {
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
     from: "Aqua Vibes Wholesale <forms@drinkaquavibes.com>",
-    to: ["drinkaquavibes@gmail.com"],
+    to: ["hello@drinkaquavibes.com"],
     replyTo: body.email,
     subject: `New Wholesale Inquiry — ${body.first_name} ${body.last_name} (${body.company})`,
     html,
@@ -91,14 +82,8 @@ export default async function handler(req: Request): Promise<Response> {
   });
 
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 502,
-      headers: { "Content-Type": "application/json" },
-    });
+    return res.status(502).json({ error: error.message });
   }
 
-  return new Response(JSON.stringify({ ok: true }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  return res.status(200).json({ ok: true });
 }
