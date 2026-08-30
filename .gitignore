@@ -144,4 +144,4 @@ vite.config.ts.timestamp-*
 **/.DS_Store
 
 # Raw source assets (web versions live in public/about)
-About/
+/About/
