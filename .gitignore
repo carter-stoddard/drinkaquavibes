@@ -142,3 +142,6 @@ vite.config.ts.timestamp-*
 # macOS
 .DS_Store
 **/.DS_Store
+
+# Raw source assets (web versions live in public/about)
+About/

@@ -16,6 +16,7 @@ const NAV_LINKS = [
   { label: "Sustainability", href: "/#sustainability" },
   { label: "Wholesale", href: "/wholesale" },
   { label: "Reviews", href: "/#reviews" },
+  { label: "About", href: "/about" },
 ];
 
 const LEGAL_LINKS = [
@@ -137,6 +138,21 @@ export default function Footer() {
             >
               Hydrate with Intention.
             </p>
+            <a
+              href="tel:+17143285878"
+              className="footer-link"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontWeight: 300,
+                fontSize: 14,
+                color: "white",
+                textDecoration: "none",
+                marginTop: 16,
+                display: "inline-block",
+              }}
+            >
+              (714) 328-5878
+            </a>
             <div style={{ display: "flex", gap: 16, marginTop: 28 }}>
               <a
                 href="https://instagram.com/drinkaquavibes"
@@ -243,21 +259,7 @@ export default function Footer() {
               margin: 0,
             }}
           >
-            © 2026 Aqua Vibes. All rights reserved. ·{" "}
-            <a
-              href="https://carterstoddard.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "rgba(255,255,255,0.55)",
-                textDecoration: "none",
-                transition: "color 0.2s ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.9)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
-            >
-              Site by Carter Stoddard LLC
-            </a>
+            © 2026 Aqua Vibes. All rights reserved.
           </p>
           <p
             className="footer-disclaimer"

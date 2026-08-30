@@ -97,7 +97,7 @@ export default function ReviewsSection() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
-              color: "#0f1923",
+              color: "#184EA2",
               lineHeight: 1.1,
             }}
           >
@@ -169,7 +169,7 @@ export default function ReviewsSection() {
                       fontStyle: "italic",
                       fontWeight: 300,
                       fontSize: 22,
-                      color: "#0f1923",
+                      color: "#184EA2",
                       lineHeight: 1.6,
                     }}
                   >

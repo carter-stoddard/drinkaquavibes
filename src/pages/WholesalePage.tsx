@@ -260,7 +260,7 @@ export default function WholesalePage() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 300,
-                  color: "#0f1923",
+                  color: "#184EA2",
                   lineHeight: 1.1,
                 }}
               >
@@ -678,7 +678,7 @@ export default function WholesalePage() {
                   fontFamily: "var(--font-display)",
                   fontWeight: 300,
                   fontSize: 32,
-                  color: "#0f1923",
+                  color: "#184EA2",
                   lineHeight: 1.15,
                   margin: 0,
                   marginBottom: 12,

@@ -68,7 +68,7 @@ export default function Hero({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease }}
-            className="text-[48px] md:text-[56px] lg:text-[72px] xl:text-[88px] leading-[1.05] lg:leading-[1.02] tracking-[-0.005em] text-[#0d1320] mt-[10px] lg:mt-0 mb-8 lg:mb-12"
+            className="text-[48px] md:text-[56px] lg:text-[72px] xl:text-[88px] leading-[1.05] lg:leading-[1.02] tracking-[-0.005em] text-[#184EA2] mt-[10px] lg:mt-0 mb-8 lg:mb-12"
             style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
           >
             {headline}

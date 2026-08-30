@@ -86,7 +86,7 @@ export default function SustainabilitySection() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
-              color: "#0f1923",
+              color: "#184EA2",
             }}
           >
             Made to <em>outlast.</em>
@@ -285,7 +285,7 @@ export default function SustainabilitySection() {
                 fontFamily: "var(--font-display)",
                 fontWeight: 300,
                 fontSize: 36,
-                color: "#0f1923",
+                color: "#184EA2",
                 lineHeight: 1.1,
               }}
             >

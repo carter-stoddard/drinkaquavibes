@@ -401,7 +401,7 @@ function ExpandedCard({
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
-              color: "#0f1923",
+              color: "#184EA2",
             }}
           >
             {card.lead}
@@ -460,7 +460,7 @@ function ExpandedCard({
                 fontStyle: "italic",
                 fontWeight: 300,
                 fontSize: 16,
-                color: "#0f1923",
+                color: "#184EA2",
                 lineHeight: 1.55,
                 marginTop: 4,
               }}
@@ -722,7 +722,7 @@ export default function USPSection() {
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 300,
-            color: "#111111",
+            color: "#184EA2",
           }}
         >
           Pure Water. Pure Intention. <em>Pure You.</em>

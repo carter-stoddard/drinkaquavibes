@@ -84,7 +84,7 @@ export default function BentoSection() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
-              color: "#0f1923",
+              color: "#184EA2",
             }}
           >
             Made for <em>every moment.</em>

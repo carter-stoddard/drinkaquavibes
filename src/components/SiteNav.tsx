@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { label: "Frequency", href: "/#the-frequency" },
   { label: "Sustainability", href: "/#sustainability" },
   { label: "Reviews", href: "/#reviews" },
+  { label: "About", href: "/about" },
 ];
 
 function scrollToHash(href: string) {
@@ -185,7 +186,7 @@ export default function SiteNav() {
                   style={{
                     fontFamily: "var(--font-display)",
                     fontWeight: 300,
-                    color: "#0d1320",
+                    color: "#184EA2",
                   }}
                 >
                   {link.label}

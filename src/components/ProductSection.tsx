@@ -57,7 +57,7 @@ function Headline({ children }: { children: React.ReactNode }) {
         fontFamily: "var(--font-display)",
         fontWeight: 300,
         fontSize: 48,
-        color: "#0f1923",
+        color: "#184EA2",
         lineHeight: 1.1,
       }}
     >
@@ -189,7 +189,7 @@ export default function ProductSection() {
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 300,
-            color: "#0f1923",
+            color: "#184EA2",
           }}
         >
           Three details. <em>One bottle.</em>

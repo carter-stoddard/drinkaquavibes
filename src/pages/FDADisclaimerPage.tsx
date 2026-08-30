@@ -8,7 +8,7 @@ const sectionTitle: React.CSSProperties = {
   fontFamily: "var(--font-display)",
   fontWeight: 300,
   fontSize: 28,
-  color: "#0f1923",
+  color: "#184EA2",
   lineHeight: 1.2,
   marginTop: 48,
   marginBottom: 16,
@@ -49,7 +49,7 @@ export default function FDADisclaimerPage() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
-              color: "#0f1923",
+              color: "#184EA2",
               lineHeight: 1.1,
               marginBottom: 12,
             }}

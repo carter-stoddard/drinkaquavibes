@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import WholesalePage from "./pages/WholesalePage";
+import AboutPage from "./pages/AboutPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
 import AccessibilityPage from "./pages/AccessibilityPage";
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
       <SmoothScrollLayout>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/wholesale" element={<WholesalePage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
